@@ -1,0 +1,21 @@
+Screen {
+    align: center middle;    
+}
+
+MainMenu {
+    layout: vertical;
+    background: $boost;
+    display: block;
+    align: center middle;
+    height: 30;
+    margin: 1;
+    min-width: 40;
+    padding: 1;
+}
+
+Button {
+    width: 28;
+    margin: 1;    
+}
+
+
