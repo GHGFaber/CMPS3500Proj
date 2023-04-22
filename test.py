@@ -25,12 +25,25 @@ def count_all_values(df, column):
         count+=1
     return count
 
+
+#!!!!!!!!!!!    Moises' "first few" function   
+
+def first_5(df, quantity):
+    first_5 = []
+    first_5 = df.head(quantity).values.tolist()
+    return first_5
+     
+     
+     
+     
+
 while True:
      user_input = input("\
                         -----------------Menu--------------\n \
                         [1]Read              [2]Print DF \n \
                         [3]Print Col         [4]Drop Col\n \
                         [5]Get Col Ct        [6]Get Un. Ct \n \
+                        [7]Get First 5                     \n \
                                  [c]Clear Console\n \
                                     [d]Done\n")
 
@@ -119,6 +132,36 @@ while True:
           
           unique_col_count = count_unique_values(df, col_name)
           print(len(unique_col_count))
+     
+     elif user_input == '7':
+           ################# count unique values in col #####################
+          if df.empty:
+               print("DataFrame is empty")
+               continue
+
+          print(df.columns.to_list())
+          print("\n") 
+
+          quantity = input("How many rows would you like to see, please input a number from 1 to " +  str(len(df)) + " \n")
+
+          first_five = first_5(df, int(quantity))
+          count = 0
+
+          for values in first_five:
+               count += 1
+               if count == 1:
+                    print("\n\n" + str(count) + "st Row\n")
+                    print(values)
+               elif count == 2:
+                    print("\n\n" + str(count) + "nd Row\n")
+                    print(values)
+               elif count == 3:
+                    print("\n\n" + str(count) + "rd Row\n")
+                    print(values)
+               else:
+                    print("\n\n" + str(count) + "th Row\n")
+                    print(values)
+           
             
      else:
           print('Invalid input. Please try again.')
