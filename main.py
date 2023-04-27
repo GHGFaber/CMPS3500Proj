@@ -161,7 +161,7 @@ while True:
         table = Table(title="This is Table")
 
         for column_headers in df.columns:
-            table.add_column(column_headers, justify="right", style="cyan", no_wrap=True)
+            table.add_column(column_headers, justify="right", style="cyan", overflow="fold")
         
         for values, value_list in enumerate(first_five):
             row = [str(values)] if True else []
