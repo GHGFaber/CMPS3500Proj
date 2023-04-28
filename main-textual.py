@@ -12,11 +12,14 @@
 
 import pandas as pd
 import os
-import time
-import datetime
+
+from textual.app import App, ComposeResult
+from textual.containers import Container
+from textual.widgets import Header, Footer, Static, Label, Input
 
 from rich.console import Console
 from rich.table import Table
+from rich.text import Text
 from time import sleep
 
 console = Console()
@@ -51,75 +54,69 @@ def first_5(df, quantity):
     first_5 = df.head(quantity).values.tolist()
     return first_5
 
-# Function to get current time
-def current_time():
-    return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+class MenuGUI(Static):
+    def compose(self) -> ComposeResult:
+        text = Text("\
+                    -----------------Menu--------------\n \
+                    [1]Read              [2]Print DF \n \
+                    [3]Print Col         [4]Drop Col\n \
+                    [5]Get Col Ct        [6]Get Un. Ct \n \
+                    [7]Get First 5                     \n \
+                                [c]Clear Console\n \
+                                [d]Done\n")
+        yield Label(text)
+        yield Input(placeholder="[?]")
 
-def menuDisplay():
-    print ("\
-                    -----------------Menu--------------------- \n \
-                    [1]Load Data             [2]Exploring Data \n \
-                    [3]Data Analysis         [4]Print Data Set\n \
+    def on_input_submitted
+     
+class MainMenu(App):
+    """ MainMenu Container in Textual """
+    BINDINGS = [
+        ("q", "quit", "Quit"),
+        ("d", "toggle_dark", "Toggle dark mode"),
+    ]
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Footer()
+        yield Container(MenuGUI())
+
+    def action_toggle_dark(self) -> None:
+        """ An Action to Toggle Dark Mode """
+        self.dark = not self.dark
+
+if __name__ == "__main__":
+    app = MainMenu()
+    app.run()
+
+"""
+while True:
+    user_input = input("\
+                    -----------------Menu--------------\n \
+                    [1]Read              [2]Print DF \n \
+                    [3]Print Col         [4]Drop Col\n \
+                    [5]Get Col Ct        [6]Get Un. Ct \n \
+                    [7]Get First 5                     \n \
                                 [c]Clear Console\n \
                                 [d]Done\n")
 
-def load_data():
-    global df
-    print ("\
-                    -----------------Load Data Set--------------\n \
-                    [1]data.csv                                 \n \
-                    [2]N/A                                      \n \
-                    [3]N/A                                      \n \
-                                [c]Clear Console\n \
-                                [d]Done\n")
-    file_choice = input(f"[{current_time()}] Select the number of the file to load from the list below: ")
-    if file_choice == "1":
-        file_name = "data.csv"
-        # Load data set and time how long it takes
-        start_time = time.time()
-        df = pd.read_csv(file_name)
+    if user_input == 'd':
+        break
+
+    elif user_input == 'c':
+        clear_console()
+
+    elif user_input == '1':
+        df = pd.read_csv('data.csv')
         df = df.rename(columns=lambda x: x.strip()) #trim whitespace from headers
         df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x) #trim whitespace from cells
         print('CSV file has been read into a pandas dataframe.')
-        end_time = time.time()
-        
-        print(f"[{current_time()}]" + " " + file_name)
-        print(f"[{current_time()}] Total Columns Read: {df.shape[1]}")
-        print(f"[{current_time()}] Total Rows Read: {df.shape[0]}\n")
-        print("File loaded successfully!")
-        print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
-    else:
-        print("Invalid choice. Returning to the main menu.")
-        return
-    
-def print_data():
-################# count unique values in col #####################
-    if df.empty:
-        print("DataFrame is empty")
-        return
-    
-    quantity = input("How many rows would you like to see, please input a number from 1 to " +  str(len(df)) + " \n")
-    first_five = first_5(df, int(quantity))
 
-    table = Table(title="This is Table")
-
-    for column_headers in df.columns:
-        table.add_column(column_headers, justify="right", style="cyan", overflow="fold")
-    
-    for values, value_list in enumerate(first_five):
-        row = [str(values)] if True else []
-        row += [str(x) for x in value_list]
-        table.add_row(*row)
-
-    console.print(table) 
-
-"""while True:
-    user_input = input("\
-                    -----------------Menu--------------\n \
-                    [1]Load Data             [2]Exploring Data \n \
-                    [3]Data Analysis         [4]Print Data Set\n \
-                                [c]Clear Console\n \
-                                [d]Done\n")
+    elif user_input == '2':
+        ################# print df #####################
+        try:
+            print(df.iloc[:, :10].to_string(index=False, justify='left'))
+        except NameError:
+            print('Dataframe not yet defined. Please read in CSV file first.')
 
     elif user_input == '3':
         ################# print col #####################
@@ -187,24 +184,38 @@ def print_data():
         
         unique_col_count = count_unique_values(df, col_name)
         print(len(unique_col_count))
+    
+    elif user_input == '7':
+        ################# count unique values in col #####################
+        if df.empty:
+            print("DataFrame is empty")
+            continue
+        
+        quantity = input("How many rows would you like to see, please input a number from 1 to " +  str(len(df)) + " \n")
+        first_five = first_5(df, int(quantity))
 
-        """
-if __name__ == "__main__":
-    while True:
-        # Display Main Menu
-        menuDisplay()
-        user_input = input("Enter an option: ")
-        if user_input == "d":
-            break
-        elif user_input == "1": 
-            load_data()
-        elif user_input == "2": 
-            explore_data()
-        elif user_input == "3": 
-            data_analysis()
-        elif user_input == "4": 
-            print_data()
-        elif user_input == "c": 
-            clear_console()
-        else:
-            print("Invalid Choice. Please Try Again.")
+        table = Table(title="This is Table")
+
+        for column_headers in df.columns:
+            table.add_column(column_headers, justify="right", style="cyan", overflow="fold")
+        
+        for values, value_list in enumerate(first_five):
+            row = [str(values)] if True else []
+            row += [str(x) for x in value_list]
+            table.add_row(*row)
+        #for values in first_five:
+            #table.add_row(str(values))
+
+        console.print(table)
+
+        #print(df.columns.to_list())
+        #print("\n") 
+
+        #quantity = input("How many rows would you like to see, please input a number from 1 to " +  str(len(df)) + " \n")
+
+        #first_five = first_5(df, int(quantity))
+        #count = 0
+        
+    else:
+        print('Invalid input. Please try again.')
+"""
