@@ -176,8 +176,8 @@ while True:
             continue
 
         print(df.columns.to_list())
-        col_name = input("Column name:  ")
-        
+ 
+        print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
         if col_name not in df.columns:
             print("Error: Column name does not exist in dataframe")
             continue

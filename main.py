@@ -58,39 +58,136 @@ def current_time():
 def menuDisplay():
     print ("\
                     -----------------Menu--------------------- \n \
-                    [1]Load Data             [2]Exploring Data \n \
-                    [3]Data Analysis         [4]Print Data Set\n \
-                                [c]Clear Console\n \
-                                [d]Done\n")
+                    [1] Load Data            [2] Exploring Data \n \
+                    [3] Data Analysis        [4] Print Data Set\n \
+                                [c] Clear Console\n \
+                                [d] Done\n")
 
 def load_data():
     global df
-    print ("\
+    print("\
                     -----------------Load Data Set--------------\n \
-                    [1]data.csv                                 \n \
-                    [2]N/A                                      \n \
-                    [3]N/A                                      \n \
-                                [c]Clear Console\n \
-                                [d]Done\n")
+                    [1] data.csv                                 \n \
+                    [2] N/A                                      \n \
+                    [3] N/A                                      \n\n \
+                    [d] Return To Main Menu          \n")
     file_choice = input(f"[{current_time()}] Select the number of the file to load from the list below: ")
     if file_choice == "1":
         file_name = "data.csv"
         # Load data set and time how long it takes
         start_time = time.time()
         df = pd.read_csv(file_name)
-        df = df.rename(columns=lambda x: x.strip()) #trim whitespace from headers
-        df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x) #trim whitespace from cells
         print('CSV file has been read into a pandas dataframe.')
         end_time = time.time()
+
+        # Trimming Data Set
+        df = df.drop("Crm Cd 2", axis=1)
+        df = df.drop("Crm Cd 3", axis=1)
+        df = df.drop("Crm Cd 4", axis=1)
+        df = df.drop("Cross Street", axis=1)
+        df = df.rename(columns=lambda x: x.strip())                         #trim whitespace from headers
+        df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)  #trim whitespace from cells
         
         print(f"[{current_time()}]" + " " + file_name)
         print(f"[{current_time()}] Total Columns Read: {df.shape[1]}")
         print(f"[{current_time()}] Total Rows Read: {df.shape[0]}\n")
         print("File loaded successfully!")
         print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
+    elif file_choice == "d":
+        clear_console()
+        return
     else:
         print("Invalid choice. Returning to the main menu.")
         return
+
+def explore_data():
+    global df
+    while True:
+        print("\
+                        -----------------Exploring Data--------------\n \
+                        [1]List All Columns                          \n \
+                        [2]Drop Columns                              \n \
+                        [3]Describe Columns                          \n \
+                        [4]Search Element in Column                  \n \
+                                    [c]Clear Console                 \n \
+                                    [d]Return to Main Menu           \n")
+        choice = input("Enter an option: ")
+        if choice == "d":
+            break
+        elif choice == "c":
+            clear_console()
+        elif choice == "1":
+            if df.empty:
+                print("DataFrame is empty")
+                return
+            
+            table = Table(title="This is Table")
+            for column_headers in df.columns:
+                table.add_column(column_headers, justify="right", style="cyan", overflow="fold")
+            console.print(table)
+        elif choice == "2":
+            if df.empty:
+                print("DataFrame is empty")
+                continue
+            
+            col_name = input("Input Column Name to Drop from the list: ")
+            if col_name not in df.columns:
+                print("Error: Column name does not exist in dataframe")
+                continue
+            df = df.drop(col_name, axis=1)
+
+            if col_name not in df.columns:
+                print(f'Column [ "{col_name}" ] dropped from dataframe')
+            else:
+                print(f'Error dropping column [ "{col_name}" ] from dataframe')
+        elif choice == "3":
+            if df.empty:
+                print("DataFrame is empty")
+                continue
+
+            col_name = input(f"[{current_time()}] Input Column Name to Describe: ")
+            if col_name not in df.columns:
+                print("Error: Column name does not exist in dataframe")
+                continue
+
+            # Print Column Statistics
+            start_time = time.time()
+            print("\n" + col_name + " Stats:")
+
+            # Print Count
+            col_count = count_all_values(df, col_name)
+            print("Count: " + str(col_count))
+
+            # Print Unique Count
+            unique_col_count = count_unique_values(df, col_name)
+            print("Unique: "+ str(len(unique_col_count)))
+
+            # Print Mean
+            print("Mean: <Your Answer>")
+
+            # Print Median
+            print("Median: <Your Answer>")
+
+            # Print Mode
+            print("Mode: <Your Answer>")
+
+            # Print Standard Deviation
+            print("Standard Deviation (SD): <Your Answer>")
+
+            # Print Variance
+            print("Variance: <Your Answer>")
+
+            # Print Minimum
+            print("Minimum: <Your Answer>")
+
+            # Print Maximum
+            print("Maximum: <Your Answer>\n\n")
+
+            end_time = time.time()
+            print(f"Stats printed successfully! Time to process is {round(end_time - start_time, 2)} sec.\n")
+
+        else:
+            print("Invalid choice.")
     
 def print_data():
 ################# count unique values in col #####################
@@ -113,49 +210,7 @@ def print_data():
 
     console.print(table) 
 
-"""while True:
-    user_input = input("\
-                    -----------------Menu--------------\n \
-                    [1]Load Data             [2]Exploring Data \n \
-                    [3]Data Analysis         [4]Print Data Set\n \
-                                [c]Clear Console\n \
-                                [d]Done\n")
-
-    elif user_input == '3':
-        ################# print col #####################
-        if df.empty:
-            print("DataFrame is empty")
-            continue
-
-        print(df.columns.to_list())
-        col_name = input("Column name:  ")
-        
-        if col_name not in df.columns:
-            print("Error: Column name does not exist in dataframe")
-            continue
-        
-        print(df[col_name])
-
-    elif user_input == '4':
-        ################# delete col #####################
-        if df.empty:
-            print("DataFrame is empty")
-            continue
-
-        print(df.columns.to_list())
-        col_name = input("Column name:  ")
-        
-        if col_name not in df.columns:
-            print("Error: Column name does not exist in dataframe")
-            continue
-        
-        df = df.drop(col_name, axis=1)
-
-        if col_name not in df.columns:
-            print(f'Column [ "{col_name}" ] dropped from dataframe')
-        else:
-            print(f'Error dropping column [ "{col_name}" ] from dataframe')
-
+"""
     elif user_input == '5':
         ################# count unique values in col #####################
         if df.empty:
