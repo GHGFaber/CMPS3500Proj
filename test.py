@@ -32,6 +32,21 @@ def first_5(df, quantity):
     first_5 = []
     first_5 = df.head(quantity).values.tolist()
     return first_5
+
+def minvalue(df, column):
+     filter = df[df[column] > 0]
+     minV = filter[column].min()
+     return minV
+
+def maxvalue(df, column):
+     filter = df[df[column] > 0]
+     maxV = filter[column].max()
+     return maxV
+
+def maxColumn(df, column):
+     filter = df[df[column] > 0]
+     maxV = filter[column].idxmax()
+     return df.loc[maxV]
      
      
      
@@ -43,7 +58,8 @@ while True:
                         [1]Read              [2]Print DF \n \
                         [3]Print Col         [4]Drop Col\n \
                         [5]Get Col Ct        [6]Get Un. Ct \n \
-                        [7]Get First 5                     \n \
+                        [7]Get First 5       [8]Get Min Value\n \
+                        [9] Get Max Value\
                                  [c]Clear Console\n \
                                     [d]Done\n")
 
@@ -161,6 +177,35 @@ while True:
                else:
                     print("\n\n" + str(count) + "th Row\n")
                     print(values)
+     elif user_input == '8':
+           ################# count unique values in col #####################
+          if df.empty:
+               print("DataFrame is empty")
+               continue
+          print(df.columns.to_list())
+          print("\n") 
+
+          column = input("Which column would you like to see the minimum of? i.e. youngest victim?")
+          
+          print("Here is the youngest victim from the dataset\n")
+          print(minvalue(df, column))
+
+     elif user_input == '9':
+           ################# count unique values in col #####################
+          if df.empty:
+               print("DataFrame is empty")
+               continue
+          print(df.columns.to_list())
+          print("\n") 
+
+          column = input("Which column would you like to see the maximum of? i.e. oldest victim?")
+          
+          print("Here is the youngest victim from the dataset\n")
+          print(maxvalue(df, column))
+
+          print("\n and here is the report in regards to the victim.\n")
+          print(maxColumn(df, column))
+           
            
             
      else:
