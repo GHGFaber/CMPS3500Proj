@@ -2,9 +2,49 @@ import pandas as pd
 import time
 import datetime
 
+df = pd.DataFrame()
 # Function to get current time
 def current_time():
     return datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+def count_all_values(df, column):
+    count = 0
+    for value in df[column]:
+        count += (value == value)
+    return count
+
+def count_unique_values(df, column):
+    unique_values = {}
+    for value in df[column]:
+        if value in unique_values:
+            unique_values[value] += 1
+        else:
+            unique_values[value] = 1
+    return unique_values
+
+def search_by_value(df, column_name, value):
+    rows = df[df[column_name] == value].index.tolist()
+    return rows
+
+def count_unique_values_in_column(df):
+    print(f"[{current_time()}] Select column number to count unique values:\n")
+    for i, col_name in enumerate(df.columns):
+        print(f"{i}: {col_name}")
+
+    column_choice = int(input("Enter an option: "))
+    if column_choice < 0 or column_choice >= len(df.columns):
+        print("Invalid column number. Please try again.")
+        return
+
+    column_name = df.columns[column_choice]
+    unique_values = count_unique_values(df, column_name)
+
+    print(f"Unique values in column '{column_name}': {len(unique_values)}")
+    print("Value counts:")
+    for value, count in unique_values.items():
+        print(f"{value}: {count}")
+
+
 
 # Function to display main menu
 def main_menu():
@@ -18,7 +58,7 @@ def main_menu():
 
 # Function to load data set
 def load_data():
-    global data
+    global df
     print("Load data set:")
     print("**************")
     print(f"[{current_time()}] Select the number of the file to load from the list below:")
@@ -39,17 +79,20 @@ def load_data():
 
     # Load data set and time how long it takes
     start_time = time.time()
-    data = pd.read_csv(file_name)
+    df = pd.read_csv(file_name)
     end_time = time.time()
     
     print(f"[{current_time()}]" + " " + file_choice)
-    print(f"[{current_time()}] Total Columns Read: {data.shape[1]}")
-    print(f"[{current_time()}] Total Rows Read: {data.shape[0]}\n")
+    print(f"[{current_time()}] Total Columns Read: {df.shape[1]}")
+    print(f"[{current_time()}] Total Rows Read: {df.shape[0]}\n")
     print("File loaded successfully!")
     print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
 
 # Function to explore data set
 def explore_data():
+    if df is None:
+        print("No data loaded.")
+        return
     print("\nExploring Data:")
     print("***************")
     print("(21) List all Columns:")
@@ -58,6 +101,7 @@ def explore_data():
     print("(24) Search Element in Column:")
     print("(25) Back to Main Menu:")
     choice = input("Enter an option: ")
+    print("\n")
     if choice == "21":
         print("(21) List of all columns:")
         print("*************************")
@@ -68,13 +112,63 @@ def explore_data():
     elif choice == "23":
         print("(23) Describe Columns:")
         print("**********************")
-        print("Select column number to Describe:")
+        print(f"[{current_time()}] Select column number to Describe:\n")
+        
+        for i, col_name in enumerate(df.columns):
+            print(f"{i}: {col_name}")
+        print("\n")
+        column_choice = int(input("Enter an option: "))
+        if column_choice < 0 or column_choice >= len(df.columns):
+            print("Invalid column number. Please try again.")
+            return explore_data()
+        else:
+            column_name = df.columns[column_choice]
+            start_time = time.time()
+            count = count_all_values(df, column_name)
+            unique_values = count_unique_values(df, column_name)
+            end_time = time.time()
+            print(f"\n[{current_time()}] {column_choice}\n")
+            print(f"Column {column_choice} stats:")
+            print("============")
+            print(f"Count: {count}")
+            print(f"Unique: {len(unique_values)}")
+            print(f"Stats printed succesfully! Time to process is {round(end_time - start_time, 2)} sec.\n ")
+            return explore_data()
     elif choice == "24":
         print("(24) Search Element in Column:")
         print("*******************************")
         print("Select column number to perform a search:")
+        print(f"[{current_time()}] Enter element to search:\n")
+        for i, col_name in enumerate(df.columns):
+            print(f"{i}: {col_name}")
+        print("\n")
+        column_choice = int(input("Enter an option: "))
+        if column_choice < 0 or column_choice >= len(df.columns):
+            print("Invalid column number. Please try again.")
+            return explore_data()
+        else:
+            column_name = df.columns[column_choice]
+            element = input(f"[{current_time()}] Enter element to search: ")
+            try:
+                element = df[column_name].dtype.type(element)
+            except ValueError:
+                print("Invalid input for the data type of the selected column. Please try again.")
+                return explore_data()
+            rows = search_by_value(df, column_name, element)
+            if len(rows) > 0:
+                print(f"[{current_time()}] Element found in these rows. ")
+                print(rows)
+            else:
+                print(f"[{current_time()}] Element not found.")
+            return explore_data()
+    elif choice == "26":
+        print("(26) Count Unique Values in Column:")
+        print("************************************")
+        count_unique_values_in_column(df)
+        print("\n")
+        return explore_data()
     elif choice == "25":
-        return
+        return main_menu()
     else:
         print("Invalid choice. Please try again.")
         explore_data()
@@ -105,4 +199,4 @@ if __name__ == "__main__":
         elif choice == "5":
             break
         else:
-            print("Invalid choice. Please try again.")
+            print("Invalid choice. Please try again.\n")
