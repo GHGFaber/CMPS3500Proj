@@ -24,8 +24,20 @@ def count_unique_values(df, column):
     return unique_values
 
 def search_by_value(df, column_name, value):
-    rows = df[df[column_name] == value]
-    return rows
+    try:
+        # Check if column_name is in df
+        if column_name not in df.columns:
+            raise ValueError(f"{column_name} is not a column in the DataFrame")
+        
+        rows = df[df[column_name] == value]
+        return rows[column_name]
+
+    except ValueError as ve:
+        print("ValueError:", ve)
+        return None
+    except Exception as e:
+        print("An unexpected error occurred:", e)
+        return None
 
 
 def count_unique_values_in_column(df):
@@ -144,25 +156,30 @@ def explore_data():
         for i, col_name in enumerate(df.columns):
             print(f"{i}: {col_name}")
         print("\n")
-        column_choice = int(input("Enter an option: "))
-        if column_choice < 0 or column_choice >= len(df.columns):
-            print("Invalid column number. Please try again.")
-            return explore_data()
-        else:
-            column_name = df.columns[column_choice]
-            element = input(f"[{current_time()}] Enter element to search: ")
+        while True:
             try:
-                element = df[column_name].dtype.type(element)
-            except ValueError:
-                print("Invalid input for the data type of the selected column. Please try again.")
+                column_choice = int(input("Enter an option: "))
+                if column_choice < 0 or column_choice >= len(df.columns):
+                    print("Invalid column number. Please try again.")
+                    continue
+                column_name = df.columns[column_choice]
+                element = input(f"[{current_time()}] Enter element to search: ")
+                try:
+                    element = df[column_name].dtype.type(element)
+                except ValueError:
+                    print("Invalid input for the data type of the selected column. Please try again.")
+                    return explore_data()
+                rows = search_by_value(df, column_name, element)
+                if len(rows) > 0:
+                    print(f"[{current_time()}] Element found in these rows. ")
+                    print(rows)
+                else:
+                    print(f"[{current_time()}] Element not found.")
                 return explore_data()
-            rows = search_by_value(df, column_name, element)
-            if len(rows) > 0:
-                print(f"[{current_time()}] Element found in these rows. ")
-                print(rows)
-            else:
-                print(f"[{current_time()}] Element not found.")
-            return explore_data()
+            except ValueError:
+                print("Invalid input for the column number. Please try again.")
+            except IndexError:
+                print("Invalid input for the column number. Please try again.")
     elif choice == "26":
         print("(26) Count Unique Values in Column:")
         print("************************************")
