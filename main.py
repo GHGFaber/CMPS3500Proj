@@ -23,16 +23,8 @@ def count_unique_values(df, column):
     return unique_values
 
 def search_by_value(df, column_name, value):
-    # Find the index of the column with the given name
-    column_index = df.columns.get_loc(column_name)
-
-    rows = []
-    # Iterate over rows, starting from the second row
-    for i in range(1, len(df)): 
-        # If the value in the column matches the given value, record the row index
-        if df.iat[i, column_index] == value: 
-            rows.append(i)
-    return rows
+    row_indices = df[df[column_name] == value].index.tolist()
+    return row_indices
 
 
 def count_unique_values_in_column(df):
