@@ -89,9 +89,40 @@ def explore_data():
         print("*******************************")
         print("Select column number to perform a search:")
         #TODO: Implement search
+        print("Select column number to perform a search:")
+        #TODO: Implement search
+        print(f"[{util.current_time()}] Enter element to search:\n")
+        for i, col_name in enumerate(df.columns):
+            print(f"{i}: {col_name}")
+        print("\n")
+        while True:
+            try:
+                column_choice = int(input("Enter an option: "))
+                if column_choice < 0 or column_choice >= len(df.columns):
+                    print("Invalid column number. Please try again.")
+                    continue
+                column_name = df.columns[column_choice]
+                element = input(f"[{util.current_time()}] Enter element to search: ")
+                try:
+                    element = df[column_name].dtype.type(element)
+                except ValueError:
+                    print("Invalid input for the data type of the selected column. Please try again.")
+                rows = explore.search_by_value(df, column_name, element)
+                if len(rows) > 0:
+                    print(f"[{util.current_time()}] Element found in these rows. ")
+                    print(rows)
+                else:
+                    print(f"[{util.current_time()}] Element not found.")
+                continue_search = input("Do you want to continue searching? (yes/no): ")
+                if continue_search.lower() != "yes":
+                    return explore_data()
+            except ValueError:
+                print("Invalid input for the column number. Please try again.")
+            except IndexError:
+                print("Invalid input for the column number. Please try again.")
 
     elif choice == "25":
-        return
+        return 
     
     else:
         print("Invalid choice. Please try again.")
