@@ -10,7 +10,8 @@ def current_time():
 def count_all_values(df, column):
     count = 0
     for value in df[column]:
-        count += (value == value)
+        if value == value:
+            count =+ 1
     return count
 
 def count_unique_values(df, column):
@@ -23,8 +24,8 @@ def count_unique_values(df, column):
     return unique_values
 
 def search_by_value(df, column_name, value):
-    row_indices = df[df[column_name] == value].index.tolist()
-    return row_indices
+    rows = df[df[column_name] == value]
+    return rows
 
 
 def count_unique_values_in_column(df):
@@ -41,7 +42,7 @@ def count_unique_values_in_column(df):
     unique_values = count_unique_values(df, column_name)
 
     print(f"Unique values in column '{column_name}': {len(unique_values)}")
-    print("Value counts:")
+    print("Value:  Counts:")
     for value, count in unique_values.items():
         print(f"{value}: {count}")
 
