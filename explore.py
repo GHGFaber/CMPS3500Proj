@@ -43,3 +43,20 @@ def drop_column(df):
 
     util.wait_on_user()
 
+    
+def search_by_value(df, column_name, value):
+    try:
+        # Check if column_name is in df
+        if column_name not in df.columns:
+            raise ValueError(f"{column_name} is not a column in the DataFrame")
+        
+        rows = df[df[column_name] == value]
+        return rows[column_name]
+
+    except ValueError as ve:
+        print("ValueError:", ve)
+    except Exception as e:
+        print("An unexpected error occurred:", e)
+
+    util.wait_on_user()
+
