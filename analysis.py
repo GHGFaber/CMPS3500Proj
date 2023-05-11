@@ -1,5 +1,6 @@
 import pandas as pd
 import calendar
+import re
 
 # (0)  Show the total unique count of crimes per year sorted in descending order.
 # (1)  Shot the top 5 areas (AREA NAME) with the mos crime events in all years (Sorted by the number of crime events)
@@ -45,7 +46,7 @@ def analysis_1(df):
         # create a sub-dictionary with the top 5 keys and their values from the parent dictionary
         top_five_areas = {k: v for k, v in area_crime_counts.items() if k in top_keys}
     except Exception as e:
-        print("Error occurred:", e)
+        print("1: Error occurred:", e)
         return None
    
     return sorted(top_five_areas.items(), key=lambda item: item[1], reverse=True)
@@ -71,7 +72,7 @@ def analysis_2(df):
             else:
                 month_crime_counts[month_name] = 1
     except Exception as e:
-        print("Error occurred:", e)
+        print("2: Error occurred:", e)
         return None
    
     return sorted(month_crime_counts.items(), key=lambda item: item[1])
@@ -98,7 +99,35 @@ def analysis_5(df):
 def analysis_6(df):
     # (6)  Show the 10 top most common crime types (Crm Cd Desc) overall across all years.
 
-    return None
+    if 'DATE OCC' not in df.columns:
+        print("6: Missing key column 'DATE OCC'")
+        return None
+    if 'Crm Cd Desc' not in df.columns:
+        print("6: Missing key column 'Crm Cd Desc'")
+        return None  
+   
+    # create dictionary of Months with crime count values
+    crime_types = {}
+    
+    try:
+        df_6 = df
+        for value in df_6['Crm Cd Desc']:
+            if value in crime_types:
+                crime_types[value] += 1
+            else:
+                crime_types[value] = 1
+
+        sorted_dict = {k: v for k, v in sorted(crime_types.items(), key=lambda item: item[1], reverse=True)}
+        # get the top 5 keys from the sorted dictionary
+        top_keys = list(sorted_dict.keys())[:10]
+        # create a sub-dictionary with the top 5 keys and their values from the parent dictionary
+        top_ten_crime_types = {k: v for k, v in crime_types.items() if k in top_keys} 
+    
+    except Exception as e:
+        print("2: Error occurred:", e)
+        return None
+    
+    return top_ten_crime_types
 
 
 def analysis_7(df):
@@ -124,7 +153,7 @@ def analysis_7(df):
         df_7 = df_7[df_7['LOCATION'].str.contains(location_name, case=False, na=False)]
         df_7 = df_7[(df_7['Vict Sex'] == 'F') | (df_7['Vict Sex'] == 'M')]
     except Exception as e:
-        print("Error occurred:", e)
+        print("7: Error occurred:", e)
         return None
 
     vict_sex_counts = {}
@@ -149,49 +178,45 @@ def analysis_7(df):
 def analysis_8(df):
     # (8)  What is the month the has the most major credit card frauds (Crm Cd Desc = 'CREDIT CARDS, FRAUD USE ($950 & UNDER')) in LA in 2019.
     
-    if 'DATE OCC' not in df.columns:
-        print("8: Missing key column 'DATE OCC'")
-        return None
-    if 'LOCATION' not in df.columns:
-        print("8: Missing key column 'LOCATION'")
-        return None
-    if 'Crm Cd' not in df.columns:
-        print("8: Missing key column 'Crm Cd'")
-        return None
-    if 'Crm Cd Desc' not in df.columns:
-        print("8: Missing key column 'Crm Cd Desc'")
-        return None
+    # if 'DATE OCC' not in df.columns:
+    #     print("8: Missing key column 'DATE OCC'")
+    #     return None
+    # if 'LOCATION' not in df.columns:
+    #     print("8: Missing key column 'LOCATION'")
+    #     return None
+    # if 'Crm Cd' not in df.columns:
+    #     print("8: Missing key column 'Crm Cd'")
+    #     return None
+    # if 'Crm Cd Desc' not in df.columns:
+    #     print("8: Missing key column 'Crm Cd Desc'")
+    #     return None
     
-    target_month = 12
-    target_year = 2018
-    target_age = 65
-    target_gender = 'M'
-    
-    try:
-        df_9 = df
-        df_9['DATE OCC'] = pd.to_datetime(df_9['DATE OCC'])
-        df_9 = df_9.loc[(df_9['DATE OCC'].dt.month == target_month) & (df_9['DATE OCC'].dt.year == target_year)]
-        df_9 = df_9[df_9['Vict Sex'] == target_gender]
-        df_9 = df_9[df_9['Vict Age'] >= target_age]
-    except Exception as e:
-        print("Error occurred:", e)
-        return None
+    # target_desc = 'CREDIT CARDS, FRAUD USE ($950.01 & OVER)'
+    # location_name = 'LOS ANGELES'
+    # target_year = 2013
 
-    # create dictionary of Areas with crime count values
-    area_crime_counts = {}
-    for value in df_9['AREA NAME']:
-        if value in area_crime_counts:
-            area_crime_counts[value] += 1
-        else:
-            area_crime_counts[value] = 1
+    # try:
+    #     df_8 = df
+    #     df_8['DATE OCC'] = pd.to_datetime(df_8['DATE OCC'])
+    #     df_8 = df_8[df_8['Crm Cd Desc'].str.extract(target_desc, flags=re.IGNORECASE).notnull().any(1)]
+    #     #df_8 = df_8[df_8['LOCATION'].str.contains(location_name, case=False, na=False)]
+    #     #df_8 = df_8.loc[df_8['DATE OCC'].dt.year == target_year]
 
-    sorted_dict = {k: v for k, v in sorted(area_crime_counts.items(), key=lambda item: item[1], reverse=True)}
-    # get the top 5 keys from the sorted dictionary
-    top_keys = list(sorted_dict.keys())[:5]
-    # create a sub-dictionary with the top 5 keys and their values from the parent dictionary
-    top_five_areas = {k: v for k, v in area_crime_counts.items() if k in top_keys} 
-   
-    return top_five_areas
+    #     fraudct_by_month = {}
+    #     for value in df_8['DATE OCC']:
+    #         month_name = calendar.month_name[value.month]
+    #         if month_name in fraudct_by_month:
+    #             fraudct_by_month[month_name] += 1
+    #         else:
+    #             fraudct_by_month[month_name] = 1
+
+    #     if not fraudct_by_month:
+    #         return "No major credit card frauds in {} in {}".format(location_name, target_year)
+    # except Exception as e:
+    #     print("8: Error occurred:", e)
+    #     return None
+ 
+    # return max(fraudct_by_month.items(), key=lambda x: x[1])
     return None
 
 
@@ -222,7 +247,7 @@ def analysis_9(df):
         df_9 = df_9[df_9['Vict Sex'] == target_gender]
         df_9 = df_9[df_9['Vict Age'] >= target_age]
     except Exception as e:
-        print("Error occurred:", e)
+        print("9: Error occurred:", e)
         return None
 
     # create dictionary of Areas with crime count values

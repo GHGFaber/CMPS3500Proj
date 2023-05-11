@@ -242,7 +242,10 @@ def data_analysis():
 # fucntion to print data set
 def print_data():
     try:
-        print(df)
+        col = 'Crm Cd Desc'
+        target_desc = '$950.01 & OVER'
+        df_n = df[df['Crm Cd Desc'].str.contains(target_desc, case=False, na=False)]
+        print(df_n)
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except Exception as e:
