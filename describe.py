@@ -1,5 +1,4 @@
 import pandas as pd
-import sys
 import math
 
 def sort_ascending(arr):
@@ -159,6 +158,7 @@ def get_variance(df, col_name, mean):
 
     return variance
 
+
 def get_minimum(df, col_name):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
         print("Error: Minimum is not of numeric data type.")
@@ -177,6 +177,7 @@ def get_minimum(df, col_name):
         print("Error occurred:", e)
 
     return min
+
 
 def get_maximum(df, col_name):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
