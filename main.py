@@ -145,24 +145,23 @@ def explore_data():
 # Function to describe data set
 def describe_data():
     util.clear_console()
-    print("Describing Data:")
-    print("***************")
+    console.print("------------  Describing Data: --------------- \n")
     try: 
         for i, column in enumerate(df.columns):
-            print(f"{i}: {column}")
+            console.print(f"{i}: {column}")
     except (AttributeError, ValueError):
-        print("DataFrame is not defined or empty.")
+        console.print("DataFrame is not defined or empty.")
         return
     except Exception as e:
-        print("Error occurred:", e)
+        console.print("Error occurred:", e)
         return
 
-    col_index = input("\nEnter a column number or [L] to list columns:\t")
+    col_index = console.input("\nEnter a column number or [L] to list columns:\t")
 
     try:
         col_name = df.columns[int(col_index)]
     except Exception as e:
-        print("Error occurred:", e)
+        console.print("Error occurred:", e)
         return
     
     start_time = time.time()
@@ -178,19 +177,20 @@ def describe_data():
     mean = describe.get_mean(df, col_name)
     end_time = time.time()
 
-    print(f"\nColumn [{col_name}]:")
-    print("===========================")
-    print(f"Count:\t\t\t\t{counts['full']}")
-    print(f"Unique:\t\t\t\t{counts['unique']}")
-    print(f"Mean:\t\t\t\t{mean}")
-    print(f"Median:\t\t\t\t{median}")
-    print(f"Mode:\t\t\t\t{mode}")
-    print(f"Standard Deviation (SD):\t{standard_deviation}")
-    print(f"Variance:\t\t\t{variance}")
-    print(f"Minimum:\t\t\t{min}")
-    print(f"Maximum:\t\t\t{max}")
+    console.print(f"\nColumn [{col_name}]:")
+    console.print("===========================")
+    console.print(f"Count:\t\t\t\t{counts['full']}")
+    console.print(f"Unique:\t\t\t\t{counts['unique']}")
+    console.print(f"Mean:\t\t\t\t{mean}")
+    console.print(f"Median:\t\t\t\t{median}")
+    console.print(f"Mode:\t\t\t\t{mode}")
+    console.print(f"Standard Deviation (SD):\t{standard_deviation}")
+    console.print(f"Variance:\t\t\t{variance}")
+    console.print(f"Minimum:\t\t\t{min}")
+    console.print(f"Maximum:\t\t\t{max}")
 
-    print(f"\nTime to process is {round(end_time - start_time, 2)} sec.\n")
+    console.print(f"\nTime to process is {end_time - start_time} sec.\n")
+    util.wait_on_user()
 
 
 # Function for analysis of data set
@@ -247,18 +247,17 @@ def data_analysis():
 # fucntion to print data set
 def print_data(df):
     util.clear_console()
-    print("\nData Analysis:")
-    print("**************")
+    console.print ("--------------  Printing Data  ----------------- \n")
 
     try:
-        n = input("Enter number of rows:\t")
+        n = console.input("Enter number of rows:\t")
         pd.set_option('display.max_rows', None)
         #pd.set_option('display.max_columns', None)
-        print(df.head(int(n)))
+        console.print(df.head(int(n)))
     except (AttributeError, ValueError):
-        print("DataFrame is not defined or empty.")
+        console.print("DataFrame is not defined or empty.")
     except Exception as e:
-        print("Error occurred:", e)
+        console.print("Error occurred:", e)
 
     util.wait_on_user()
 
