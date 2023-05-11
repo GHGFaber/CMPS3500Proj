@@ -80,7 +80,7 @@ def analysis_2(df):
 
 def analysis_3(df):
     # (3)  Show the top 10 streets with the most crimes in LA in 2019. Also display the total amount of crimes in each street.
-
+    
     return None
 
 
