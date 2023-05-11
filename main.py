@@ -95,9 +95,6 @@ def explore_data():
         print("(24) Search Element in Column:")
         print("*******************************")
         print("Select column number to perform a search:")
-        #TODO: Implement search
-        print("Select column number to perform a search:")
-        #TODO: Implement search
         print(f"[{util.current_time()}] Enter element to search:\n")
         for i, col_name in enumerate(df.columns):
             print(f"{i}: {col_name}")
@@ -120,8 +117,8 @@ def explore_data():
                     print(rows)
                 else:
                     print(f"[{util.current_time()}] Element not found.")
-                continue_search = input("Do you want to continue searching? (yes/no): ")
-                if continue_search.lower() != "yes":
+                continue_search = input("Do you want to continue searching? (y/n): ")
+                if continue_search.lower() != "y":
                     return explore_data()
             except ValueError:
                 print("Invalid input for the column number. Please try again.")
