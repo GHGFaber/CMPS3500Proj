@@ -248,13 +248,21 @@ def data_analysis():
 
 
 # fucntion to print data set
-def print_data():
+def print_data(df):
+    util.clear_console()
+    print("\nData Analysis:")
+    print("**************")
+
     try:
-        print(df)
+        n = input("Enter number of rows:\t")
+        pd.set_option('display.max_rows', None)
+        #pd.set_option('display.max_columns', None)
+        print(df.head(int(n)))
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except Exception as e:
         print("Error occurred:", e)
+
     util.wait_on_user()
 
 
@@ -272,7 +280,7 @@ if __name__ == "__main__":
         elif choice == "3":
             data_analysis()
         elif choice == "4":
-            print_data()
+            print_data(df)
         elif choice == "5":
             break
         else:
