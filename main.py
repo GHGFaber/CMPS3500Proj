@@ -113,15 +113,15 @@ def explore_data():
                     print("Invalid input for the data type of the selected column. Please try again.")
                     continue
                 start_time = time.time()
-                rows = search_by_value(df, column_name, element)
+                rows = explore.search_by_value(df, column_name, element)
                 end_time = time.time()
                 if len(rows) > 0:
-                    print(f"[{current_time()}] Element found in these rows. ")
+                    print(f"[{util.current_time()}] Element found in these rows. ")
                     print(rows)
                     print(f"\nStats printed succesfully! Time to process is {round(end_time - start_time, 2)} sec.\n ")
                     return explore_data()
                 else:
-                    print(f"[{current_time()}] Element not found.")
+                    print(f"[{util.current_time()}] Element not found.")
                     return explore_data()
             except ValueError:
                 print("Invalid input for the column number. Please try again.")
