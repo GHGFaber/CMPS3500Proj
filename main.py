@@ -200,7 +200,7 @@ def describe_data():
 def data_analysis():
     util.clear_console()
     print("\nData Analysis:")
-    print("**************")
+    print("**************\n")
 
     result0 = analysis.analysis_0(df)
     result1 = analysis.analysis_1(df)
@@ -213,7 +213,7 @@ def data_analysis():
     result8 = analysis.analysis_8(df)
     result9 = analysis.analysis_9(df)
 
-    
+    print("")
     print(f"[{util.current_time()}] Show the total unique count of crimes per year sorted in descending order.")
     print(f"[{util.current_time()}] " + str(result0) + "\n")
     print(f"[{util.current_time()}] Shot the top 5 areas (AREA NAME) with the mos crime events in all years (Sorted by the number of crime events)")

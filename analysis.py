@@ -22,10 +22,10 @@ def analysis_1(df):
     # (1)  Show the top 5 areas (AREA NAME) with the most crime events in all years (Sorted by the number of crime events)
     
     if 'DATE OCC' not in df.columns:
-        print("Missing key column 'TIME OCC")
+        print("Missing key column 'DATE OCC'")
         return None
     if 'AREA NAME' not in df.columns:
-        print("Missing key column 'LOCATION")
+        print("Missing key column 'AREA NAME'")
         return None
 
     # create dictionary of Areas with crime count values
@@ -50,11 +50,12 @@ def analysis_1(df):
    
     return sorted(top_five_areas.items(), key=lambda item: item[1], reverse=True)
 
+
 def analysis_2(df):
     # (2)  Show all months and the unique total count of crimes sorted in increasing order.
 
     if 'DATE OCC' not in df.columns:
-        print("Missing key column 'TIME OCC")
+        print("2: Missing key column 'DATE OCC'")
         return None
     
     # create dictionary of Months with crime count values
@@ -99,17 +100,18 @@ def analysis_6(df):
 
     return None
 
+
 def analysis_7(df):
     # (7)  Are woman or men more likely to be the victim of a crime in LA between lunch time (11:00am and 1:00pm)?. Support of your answer.
 
     if 'TIME OCC' not in df.columns:
-        print("Missing key column 'TIME OCC")
+        print("7: Missing key column 'TIME OCC'")
         return None
     if 'LOCATION' not in df.columns:
-        print("Missing key column 'LOCATION")
+        print("7: Missing key column 'LOCATION'")
         return None
     if 'Vict Sex' not in df.columns:
-        print("Missing key column 'Vict Sex")
+        print("7: Missing key column 'Vict Sex'")
         return None
    
    
@@ -143,24 +145,69 @@ def analysis_7(df):
 
     return result
 
+
 def analysis_8(df):
     # (8)  What is the month the has the most major credit card frauds (Crm Cd Desc = 'CREDIT CARDS, FRAUD USE ($950 & UNDER')) in LA in 2019.
+    
+    if 'DATE OCC' not in df.columns:
+        print("8: Missing key column 'DATE OCC'")
+        return None
+    if 'LOCATION' not in df.columns:
+        print("8: Missing key column 'LOCATION'")
+        return None
+    if 'Crm Cd' not in df.columns:
+        print("8: Missing key column 'Crm Cd'")
+        return None
+    if 'Crm Cd Desc' not in df.columns:
+        print("8: Missing key column 'Crm Cd Desc'")
+        return None
+    
+    target_month = 12
+    target_year = 2018
+    target_age = 65
+    target_gender = 'M'
+    
+    try:
+        df_9 = df
+        df_9['DATE OCC'] = pd.to_datetime(df_9['DATE OCC'])
+        df_9 = df_9.loc[(df_9['DATE OCC'].dt.month == target_month) & (df_9['DATE OCC'].dt.year == target_year)]
+        df_9 = df_9[df_9['Vict Sex'] == target_gender]
+        df_9 = df_9[df_9['Vict Age'] >= target_age]
+    except Exception as e:
+        print("Error occurred:", e)
+        return None
 
+    # create dictionary of Areas with crime count values
+    area_crime_counts = {}
+    for value in df_9['AREA NAME']:
+        if value in area_crime_counts:
+            area_crime_counts[value] += 1
+        else:
+            area_crime_counts[value] = 1
+
+    sorted_dict = {k: v for k, v in sorted(area_crime_counts.items(), key=lambda item: item[1], reverse=True)}
+    # get the top 5 keys from the sorted dictionary
+    top_keys = list(sorted_dict.keys())[:5]
+    # create a sub-dictionary with the top 5 keys and their values from the parent dictionary
+    top_five_areas = {k: v for k, v in area_crime_counts.items() if k in top_keys} 
+   
+    return top_five_areas
     return None
+
 
 def analysis_9(df):
     # (9)  List the top 5 more dangerous areas for older man (age from 65 and more) in december of 2018.
     if 'DATE OCC' not in df.columns:
-        print("Missing key column 'TIME OCC")
+        print("9: Missing key column 'DATE OCC'")
         return None
     if 'AREA NAME' not in df.columns:
-        print("Missing key column 'LOCATION")
+        print("9: Missing key column 'AREA NAME'")
         return None
     if 'Vict Age' not in df.columns:
-        print("Missing key column 'Vict Age")
+        print("9: Missing key column 'Vict Age'")
         return None
     if 'Vict Sex' not in df.columns:
-        print("Missing key column 'Vict Sex")
+        print("9: Missing key column 'Vict Sex'")
         return None
     
     target_month = 12
