@@ -42,7 +42,12 @@ def load_data():
         df = pd.read_csv(file_name)
         end_time = time.time()
         df = df.rename(columns=lambda x: x.strip()) #trim whitespace from headers
-        df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x) #trim whitespace from cells    
+        df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x) #trim whitespace from cells
+        df = df.drop('Crm Cd 2', axis=1)
+        df = df.drop('Crm Cd 3', axis=1)
+        df = df.drop('Crm Cd 4', axis=1)
+        df = df.drop('Cross Street', axis=1)
+        df = df.dropna() 
     except FileNotFoundError:
         print("File not found.")
         util.wait_on_user()
@@ -163,6 +168,7 @@ def describe_data():
         return
     
     start_time = time.time()
+
     sorted_col = describe.sort_descending(df[col_name].tolist())
     counts = describe.get_counts(df, col_name)
     mean = describe.get_mean(df, col_name)
@@ -173,6 +179,7 @@ def describe_data():
     min = sorted_col[0]
     max = sorted_col[len(sorted_col) - 1]
     mean = describe.get_mean(df, col_name)
+
     end_time = time.time()
 
     print(f"\nColumn [{col_name}]:")
@@ -187,7 +194,7 @@ def describe_data():
     print(f"Minimum:\t\t\t{min}")
     print(f"Maximum:\t\t\t{max}")
 
-    print(f"\nTime to process {round(end_time - start_time, 2)} sec.\n")
+    print(f"\nTime to process is {round(end_time - start_time, 2)} sec.\n")
 
 
 def data_analysis():
@@ -198,7 +205,7 @@ def data_analysis():
 
 def print_data():
     try:
-        print(df.to_string(index=False))
+        print(df)
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except Exception as e:

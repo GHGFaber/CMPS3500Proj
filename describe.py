@@ -3,25 +3,31 @@ import time
 import math
 
 def sort_ascending(arr):
-    if len(arr) <= 1:
-        return arr
-    else:
-        pivot = arr[0]
-        less = []
-        equal = []
-        greater = []
-        for value in arr:
-            if value < pivot:
-                less.append(value)
-            elif value == pivot:
-                equal.append(value)
-            else:
-                greater.append(value)
-        return sort_ascending(less) + equal + sort_ascending(greater)
-    
+    try:
+        if len(arr) <= 1:
+            return arr
+        else:
+            pivot = arr[0]
+            less = []
+            equal = []
+            greater = []
+            for value in arr:
+                if value < pivot:
+                    less.append(value)
+                elif value == pivot:
+                    equal.append(value)
+                else:
+                    greater.append(value)
+            return sort_ascending(less) + sorted(equal) + sort_ascending(greater)
+    except Exception as e:
+        print("Error occurred:", e)
+        
 def sort_descending(arr):
-    arr = sort_ascending(arr)
-    return arr[::-1]
+    try:
+        arr = sort_ascending(arr)
+        return arr[::-1]
+    except Exception as e:
+        print("Error occurred:", e)
 
 
 def get_counts(df,col_name):
@@ -80,10 +86,6 @@ def get_median(arr):
         else:
             mid = n // 2
             median = arr[mid] 
-    except (AttributeError, ValueError):
-        print("DataFrame is not defined or empty.")
-    except IndexError:
-        print("Invalid Column Index.")
     except Exception as e:
         print("Error occurred:", e)
     
