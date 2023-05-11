@@ -93,7 +93,25 @@ def analysis_4(df):
 def analysis_5(df):
     # (5)  Print the details of the crime that that took the most time (in hours) to be reported.
 
-    return None
+    if 'DATE OCC' not in df.columns:
+        print("5: Missing key column 'DATE OCC'")
+        return None
+    if 'Date Rptd' not in df.columns:
+        print("5: Missing key column 'DATE Rptd'")
+        return None
+
+    target_row = None
+    try:
+        df_5 = df
+        df_5['Date Rptd'] = pd.to_datetime(df_5['Date Rptd'])
+        df_5['DATE OCC'] = pd.to_datetime(df_5['DATE OCC'])
+        df_5['hours_difference'] = (df_5['DATE OCC'] - df_5['Date Rptd']).astype('timedelta64[s]') / 3600
+        target_row = df['hours_difference'].idxmax()
+    except Exception as e:
+        print("2: Error occurred:", e)
+        return None
+   
+    return df.iloc[target_row]
 
 
 def analysis_6(df):
