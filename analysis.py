@@ -30,17 +30,23 @@ def analysis_1(df):
 
     # create dictionary of Areas with crime count values
     area_crime_counts = {}
-    for value in df['AREA NAME']:
-        if value in area_crime_counts:
-            area_crime_counts[value] += 1
-        else:
-            area_crime_counts[value] = 1
+    
+    try:
+        for value in df['AREA NAME']:
+            if value in area_crime_counts:
+                area_crime_counts[value] += 1
+            else:
+                area_crime_counts[value] = 1
 
-    sorted_dict = {k: v for k, v in sorted(area_crime_counts.items(), key=lambda item: item[1], reverse=True)}
-    # get the top 5 keys from the sorted dictionary
-    top_keys = list(sorted_dict.keys())[:5]
-    # create a sub-dictionary with the top 5 keys and their values from the parent dictionary
-    top_five_areas = {k: v for k, v in area_crime_counts.items() if k in top_keys} 
+    
+        sorted_dict = {k: v for k, v in sorted(area_crime_counts.items(), key=lambda item: item[1], reverse=True)}
+        # get the top 5 keys from the sorted dictionary
+        top_keys = list(sorted_dict.keys())[:5]
+        # create a sub-dictionary with the top 5 keys and their values from the parent dictionary
+        top_five_areas = {k: v for k, v in area_crime_counts.items() if k in top_keys}
+    except Exception as e:
+        print("Error occurred:", e)
+        return None
    
     return sorted(top_five_areas.items(), key=lambda item: item[1], reverse=True)
 
