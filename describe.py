@@ -188,7 +188,7 @@ def get_maximum(df, col_name):
         max = None
         for value in df[col_name]:
             if value > max or max is None:
-                min = value
+                max = value
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except IndexError:
