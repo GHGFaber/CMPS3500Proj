@@ -1,5 +1,5 @@
 import pandas as pd
-import math
+import calendar
 
 # (0)  Show the total unique count of crimes per year sorted in descending order.
 # (1)  Shot the top 5 areas (AREA NAME) with the mos crime events in all years (Sorted by the number of crime events)
@@ -53,7 +53,27 @@ def analysis_1(df):
 def analysis_2(df):
     # (2)  Show all months and the unique total count of crimes sorted in increasing order.
 
-    return None
+    if 'DATE OCC' not in df.columns:
+        print("Missing key column 'TIME OCC")
+        return None
+    
+    # create dictionary of Months with crime count values
+    month_crime_counts = {}
+    
+    try:
+        df_2 = df
+        df_2['DATE OCC'] = pd.to_datetime(df_2['DATE OCC'])
+        for value in df_2['DATE OCC']:
+            month_name = calendar.month_name[value.month]
+            if month_name in month_crime_counts:
+                month_crime_counts[month_name] += 1
+            else:
+                month_crime_counts[month_name] = 1
+    except Exception as e:
+        print("Error occurred:", e)
+        return None
+   
+    return sorted(month_crime_counts.items(), key=lambda item: item[1])
 
 
 def analysis_3(df):
