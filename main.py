@@ -179,21 +179,25 @@ def describe_data():
         util.clear_console()
         print("(236) Standard Deviation:")
         print("*******************************")
+        describe.get_standard_deviation(df)
 
     elif choice == "237":
         util.clear_console()
         print("(237) Variance:")
         print("*******************************")
+        describe.get_variance(df)
 
     elif choice == "238":
         util.clear_console()
         print("(238) Minimum:")
         print("*******************************")
+        describe.get_min(df)
 
     elif choice == "239":
         util.clear_console()
         print("(239) Maximum:")
         print("*******************************")
+        describe.get_max(df)
 
     elif choice == "b":
         return

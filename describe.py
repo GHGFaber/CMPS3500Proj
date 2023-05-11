@@ -162,3 +162,129 @@ def get_mode(df):
         print("Invalid Column Index.")
     except Exception as e:
         print("Error occurred:", e)
+
+    
+def get_standard_deviation(df):
+    try:
+       for i, column in enumerate(df.columns):
+            print(f"{i}: {column}")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+    col_index = input("\nEnter a column number or [L] to list columns:")
+
+    try:
+        col_name = df.columns[int(col_index)]
+    except Exception as e:
+        print("Error occurred:", e)
+        return
+    
+    try:
+        start_time = time.time()
+        stdev = df[col_name].std()
+        end_time = time.time()
+        print(f"The standard deviation of column {col_name} is: {stdev}")
+        print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except IndexError:
+        print("Invalid Column Index.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+
+def get_variance(df):
+    try:
+       for i, column in enumerate(df.columns):
+            print(f"{i}: {column}")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+    col_index = input("\nEnter a column number or [L] to list columns:")
+
+    try:
+        col_name = df.columns[int(col_index)]
+    except Exception as e:
+        print("Error occurred:", e)
+        return
+    
+    try:
+        start_time = time.time()
+        variance = df[col_name].var()
+        end_time = time.time()
+        print(f"The variance of column {col_name} is: {variance}")
+        print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except IndexError:
+        print("Invalid Column Index.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+def get_min(df):
+    try:
+       for i, column in enumerate(df.columns):
+            print(f"{i}: {column}")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+    col_index = input("\nEnter a column number or [L] to list columns:")
+
+    try:
+        col_name = df.columns[int(col_index)]
+    except Exception as e:
+        print("Error occurred:", e)
+        return
+    
+    try:
+        start_time = time.time()
+        min = df[col_name].min()
+        end_time = time.time()
+        print(f"The minimum value of column {col_name} is: {min}")
+        print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except IndexError:
+        print("Invalid Column Index.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+
+def get_max(df):
+    try:
+       for i, column in enumerate(df.columns):
+            print(f"{i}: {column}")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+    col_index = input("\nEnter a column number or [L] to list columns:")
+
+    try:
+        col_name = df.columns[int(col_index)]
+    except Exception as e:
+        print("Error occurred:", e)
+        return
+    
+    try:
+        start_time = time.time()
+        max = df[col_name].max()
+        end_time = time.time()
+        print(f"The maximum value of column {col_name} is: {max}")
+        print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except IndexError:
+        print("Invalid Column Index.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+
+
