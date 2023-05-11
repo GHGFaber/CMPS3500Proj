@@ -60,3 +60,53 @@ def search_by_value(df, column_name, value):
 
     util.wait_on_user()
 
+def sort_column(df):
+    try:
+       for i, column in enumerate(df.columns):
+            print(f"{i}: {column}")
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+    col_index = input("\nEnter a column number or [L] to list columns:")
+
+    try:
+        col_name = df.columns[int(col_index)]
+    except Exception as e:
+        print("Error occurred:", e)
+        return
+    
+    choice = input("\n[a] for ascending or [d] for descending:\t")
+
+    if choice == "a":
+        try:
+            start_time = time.time()
+            df = df.sort_values(col_name, ascending=True)
+            end_time = time.time()
+            print(f"Time to sort {round(end_time - start_time, 2)} sec.\n")
+        except (AttributeError, ValueError):
+            print("DataFrame is not defined or empty.")
+        except IndexError:
+            print("Invalid Column Index.")
+        except Exception as e:
+            print("Error occurred:", e)
+
+    elif choice == "d":
+        try:
+            start_time = time.time()
+            df = df.sort_values(col_name, ascending=False)
+            end_time = time.time()
+            print(f"Time to sort {round(end_time - start_time, 2)} sec.\n")
+        except (AttributeError, ValueError):
+            print("DataFrame is not defined or empty.")
+        except IndexError:
+            print("Invalid Column Index.")
+        except Exception as e:
+            print("Error occurred:", e)
+
+    else:
+        print("Invalid choice. Please try again.")
+
+    print(df[col_name])
+    return df

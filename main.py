@@ -65,7 +65,8 @@ def explore_data():
     print("(22) Drop Columns:")
     print("(23) Describe Columns:")
     print("(24) Search Element in Column:")
-    print("(25) Back to Main Menu:")
+    print("(25) Sort Column:")
+    print("(b)  Back to Main Menu:")
     choice = input("Enter an option: ")
     util.clear_console()
 
@@ -122,6 +123,11 @@ def explore_data():
                 print("Invalid input for the column number. Please try again.")
 
     elif choice == "25":
+        print("(23) Sort Column:")
+        print("**********************")
+        df = explore.sort_column(df)
+
+    elif choice == "b":
         return 
     
     else:
@@ -129,6 +135,7 @@ def explore_data():
         explore_data()
 
     # Loop back to current menu
+    util.wait_on_user()
     explore_data()
 
 # Function to describe data set
