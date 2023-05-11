@@ -3,6 +3,27 @@ import time
 import util
 import explore
 
+def sort_ascending(arr):
+    if len(arr) <= 1:
+        return arr
+    else:
+        pivot = arr[0]
+        less = []
+        equal = []
+        greater = []
+        for value in arr:
+            if value < pivot:
+                less.append(value)
+            elif value == pivot:
+                equal.append(value)
+            else:
+                greater.append(value)
+        return sort_ascending(less) + equal + sort_ascending(greater)
+    
+def sort_descending(arr):
+    arr = sort_ascending(arr)
+    return arr[::-1]
+
 
 def get_counts(df,col_name):
     counts = {"full":0, "unique":0}
@@ -28,35 +49,25 @@ def get_counts(df,col_name):
     
     return counts
 
-def get_mean(df):
-    try:
-       for i, column in enumerate(df.columns):
-            print(f"{i}: {column}")
-    except (AttributeError, ValueError):
-        print("DataFrame is not defined or empty.")
-    except Exception as e:
-        print("Error occurred:", e)
+def get_mean(df, col_name):
+    if not pd.api.types.is_numeric_dtype(df[col_name]):
+        print("Error: Column is not of numeric data type.")
+        return None
 
-    col_index = input("\nEnter a column number or [L] to list columns:")
-
+    sum = 0
+    count = 0
     try:
-        col_name = df.columns[int(col_index)]
-    except Exception as e:
-        print("Error occurred:", e)
-        return
-    
-    try:
-        start_time = time.time()
-        mean = df[col_name].mean()
-        end_time = time.time()
-        print(f"The mean of column {col_name} is: {mean}")
-        print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
+        for value in df[col_name]:
+            count += 1
+            sum += value
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except IndexError:
         print("Invalid Column Index.")
     except Exception as e:
         print("Error occurred:", e)
+
+    return sum/count
 
 
 def get_median(df):

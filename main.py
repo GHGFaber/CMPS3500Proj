@@ -163,168 +163,26 @@ def describe_data():
         print("Error occurred:", e)
         return
     
-    start_time = time.time() 
+    start_time = time.time()
     counts = describe.get_counts(df, col_name)
+    mean = describe.get_mean(df, col_name)
+    
+    sorted_col = describe.sort_descending(df[col_name].tolist())
+    
     end_time = time.time()
 
-    full_count = counts["full"]
-    unique_count = counts["unique"]
+
 
     print(f"\nColumn [{col_name}]:")
     print("===========================")
-    print(f"Count:\t{full_count}")
-    print(f"Unique:\t{unique_count}")
+    print(f"Count:\t{counts['full']}")
+    print(f"Unique:\t{counts['unique']}")
+    print(f"Mean:\t{mean}")
 
     print(f"\nTime to process {round(end_time - start_time, 2)} sec.\n")
-    # print("(233) Mean:")
-    # print("(234) Median:")
-    # print("(235) Mode:")
-    # print("(236) Standard Deviation:")
-    # print("(237) Variance:")
-    # print("(238) Minimum:")
-    # print("(239) Maximum:")
-    # print("( b ) prev menu:")
-    # choice = input("Enter an option: ")
-    # if choice == "231":
-    #     util.clear_console()
-    #     print("(231) Count:")
-    #     print("*************************")
-    #     describe.count_all_values(df)
 
-    # elif choice == "232":
-    #     util.clear_console()
-    #     print("(232) Unique Count:")
-    #     print("******************")
-    #     describe.count_unique_values(df)
+    print(sorted_col)
 
-    # elif choice == "233":
-    #     util.clear_console()
-    #     print("(233) Mean:")
-    #     print("**********************")
-    #     describe.get_mean(df)
-
-    # elif choice == "234":
-    #     util.clear_console()
-    #     print("(234) Median:")
-    #     print("*******************************")
-    #     describe.get_median(df)
-
-    # elif choice == "235":
-    #     util.clear_console()
-    #     print("(235) Mode:")
-    #     print("*******************************")
-    #     describe.get_mode(df)
-
-    # elif choice == "236":
-    #     util.clear_console()
-    #     print("(236) Standard Deviation:")
-    #     print("*******************************")
-    #     describe.get_standard_deviation(df)
-
-    # elif choice == "237":
-    #     util.clear_console()
-    #     print("(237) Variance:")
-    #     print("*******************************")
-    #     describe.get_variance(df)
-
-    # elif choice == "238":
-    #     util.clear_console()
-    #     print("(238) Minimum:")
-    #     print("*******************************")
-    #     describe.get_min(df)
-
-    # elif choice == "239":
-    #     util.clear_console()
-    #     print("(239) Maximum:")
-    #     print("*******************************")
-    #     describe.get_max(df)
-
-    # elif choice == "b":
-    #     return
-    
-    # else:
-    #     print("Invalid choice. Please try again.")
-    
-# # Function to describe data set
-# def describe_data():
-#     util.clear_console()
-#     print("Describing Data:")
-#     print("***************")
-#     print("(231) Count:")
-#     print("(232) Unique Count:")
-#     print("(233) Mean:")
-#     print("(234) Median:")
-#     print("(235) Mode:")
-#     print("(236) Standard Deviation:")
-#     print("(237) Variance:")
-#     print("(238) Minimum:")
-#     print("(239) Maximum:")
-#     print("( b ) prev menu:")
-#     choice = input("Enter an option: ")
-#     if choice == "231":
-#         util.clear_console()
-#         print("(231) Count:")
-#         print("*************************")
-#         describe.count_all_values(df)
-
-#     elif choice == "232":
-#         util.clear_console()
-#         print("(232) Unique Count:")
-#         print("******************")
-#         describe.count_unique_values(df)
-
-#     elif choice == "233":
-#         util.clear_console()
-#         print("(233) Mean:")
-#         print("**********************")
-#         describe.get_mean(df)
-
-#     elif choice == "234":
-#         util.clear_console()
-#         print("(234) Median:")
-#         print("*******************************")
-#         describe.get_median(df)
-
-#     elif choice == "235":
-#         util.clear_console()
-#         print("(235) Mode:")
-#         print("*******************************")
-#         describe.get_mode(df)
-
-#     elif choice == "236":
-#         util.clear_console()
-#         print("(236) Standard Deviation:")
-#         print("*******************************")
-#         describe.get_standard_deviation(df)
-
-#     elif choice == "237":
-#         util.clear_console()
-#         print("(237) Variance:")
-#         print("*******************************")
-#         describe.get_variance(df)
-
-#     elif choice == "238":
-#         util.clear_console()
-#         print("(238) Minimum:")
-#         print("*******************************")
-#         describe.get_min(df)
-
-#     elif choice == "239":
-#         util.clear_console()
-#         print("(239) Maximum:")
-#         print("*******************************")
-#         describe.get_max(df)
-
-#     elif choice == "b":
-#         return
-    
-#     else:
-#         print("Invalid choice. Please try again.")
-#         describe_data()
-    
-#     util.wait_on_user()
-    
-    
 
 def data_analysis():
     util.clear_console()
