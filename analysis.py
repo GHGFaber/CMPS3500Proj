@@ -22,10 +22,10 @@ def analysis_1(df):
     # (1)  Show the top 5 areas (AREA NAME) with the most crime events in all years (Sorted by the number of crime events)
     
     if 'DATE OCC' not in df.columns:
-        print("Missing key column 'DATE OCC'")
+        print("1: Missing key column 'DATE OCC'")
         return None
     if 'AREA NAME' not in df.columns:
-        print("Missing key column 'AREA NAME'")
+        print("1: Missing key column 'AREA NAME'")
         return None
 
     # create dictionary of Areas with crime count values
