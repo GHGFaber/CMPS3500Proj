@@ -81,7 +81,40 @@ def analysis_2(df):
 def analysis_3(df):
     # (3)  Show the top 10 streets with the most crimes in LA in 2019. Also display the total amount of crimes in each street.
     
-    return None
+    if 'TIME OCC' not in df.columns:
+        print("3: Missing key column 'TIME OCC'")
+        return None
+    if 'LOCATION' not in df.columns:
+        print("3: Missing key column 'LOCATION'")
+        return None
+   
+    target_year = 2019
+    location_name = 'LOS ANGELES'
+
+    streets = {}
+    try:
+        df_3 = df
+        df_3['DATE OCC'] = pd.to_datetime(df_3['DATE OCC'])
+        df_3 = df_3[df_3['DATE OCC'].dt.year == target_year]
+        df_3 = df_3[df_3['LOCATION'].str.contains(location_name, case=False, na=False)]
+        for value in df['LOCATION']:
+            substr_end_pos = value.find('LOS ANGELES')
+            if substr_end_pos != -1:
+                substring = value[:substr_end_pos].strip() # remove trailing whitespace
+                substring = ' '.join(substring.split()) # remove extra spaces in substr
+                if substring not in streets and substring != '':
+                    streets[substring] = 1
+                else:
+                    streets[substring] += 1
+
+        streets_sortedby_crimect = {k: v for k, v in sorted(streets.items(), key=lambda item: item[1], reverse=True)}
+        top10_street_keys = list(streets_sortedby_crimect.keys())[:10]
+        top10_streets_by_crimect = {k: v for k, v in streets.items() if k in top10_street_keys} 
+    except Exception as e:
+        print("3: Error occurred:", e)
+        return None
+    
+    return top10_streets_by_crimect
 
 
 def analysis_4(df):
