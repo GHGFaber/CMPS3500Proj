@@ -170,14 +170,15 @@ def describe_data():
     start_time = time.time()
 
     sorted_col = describe.sort_descending(df[col_name].tolist())
+    print(type(sorted_col[0]))
     counts = describe.get_counts(df, col_name)
     mean = describe.get_mean(df, col_name)
     median = describe.get_median(sorted_col)
     mode = describe.get_mode(df, col_name)
     standard_deviation = describe.get_standard_deviation(df, col_name, mean)
     variance = describe.get_variance(df,col_name, mean)
-    min = sorted_col[0]
-    max = sorted_col[len(sorted_col) - 1]
+    min = describe.get_minimum(df, col_name)
+    max = describe.get_maximum(df, col_name)
     mean = describe.get_mean(df, col_name)
 
     end_time = time.time()

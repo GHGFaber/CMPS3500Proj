@@ -1,5 +1,5 @@
 import pandas as pd
-import time
+import sys
 import math
 
 def sort_ascending(arr):
@@ -57,7 +57,7 @@ def get_counts(df,col_name):
 
 def get_mean(df, col_name):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
-        print("Error: Column is not of numeric data type.")
+        print("Error: Mean is not of numeric data type.")
         return None
 
     sum = 0
@@ -77,6 +77,10 @@ def get_mean(df, col_name):
 
 
 def get_median(arr):
+    if not isinstance(arr[0], (int, float)):
+        print("Error: Median is not of numeric data type.")
+        return None
+    
     try:
         n = len(arr)
         if n % 2 == 0:
@@ -121,7 +125,7 @@ def get_mode(df, col_name):
     
 def get_standard_deviation(df, col_name, mean):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
-        print("Error: Column is not of numeric data type.")
+        print("Error: Std is not of numeric data type.")
         return None
     
     try:
@@ -140,7 +144,7 @@ def get_standard_deviation(df, col_name, mean):
 
 def get_variance(df, col_name, mean):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
-        print("Error: Column is not of numeric data type.")
+        print("Error: Variance is not of numeric data type.")
         return None
    
     try:
@@ -154,6 +158,44 @@ def get_variance(df, col_name, mean):
         print("Error occurred:", e)
 
     return variance
+
+def get_minimum(df, col_name):
+    if not pd.api.types.is_numeric_dtype(df[col_name]):
+        print("Error: Minimum is not of numeric data type.")
+        return None
+    
+    try:
+        min = None
+        for value in df[col_name]:
+            if value < min or min is None:
+                min = value
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except IndexError:
+        print("Invalid Column Index.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+    return min
+
+def get_maximum(df, col_name):
+    if not pd.api.types.is_numeric_dtype(df[col_name]):
+        print("Error: Maximum is not of numeric data type.")
+        return None
+    
+    try:
+        max = None
+        for value in df[col_name]:
+            if value > max or max is None:
+                min = value
+    except (AttributeError, ValueError):
+        print("DataFrame is not defined or empty.")
+    except IndexError:
+        print("Invalid Column Index.")
+    except Exception as e:
+        print("Error occurred:", e)
+
+    return max
 
 
 
