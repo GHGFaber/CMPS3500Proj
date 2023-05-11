@@ -203,44 +203,44 @@ def data_analysis():
     print("**************\n")
 
     print("")
-    result0 = analysis.analysis_0(df)
     print(f"[{util.current_time()}] Show the total unique count of crimes per year sorted in descending order.")
+    result0 = analysis.analysis_0(df)
     print(f"[{util.current_time()}] " + str(result0) + "\n")
  
-    result1 = analysis.analysis_1(df)
     print(f"[{util.current_time()}] Shot the top 5 areas (AREA NAME) with the mos crime events in all years (Sorted by the number of crime events)")
+    result1 = analysis.analysis_1(df)
     print(f"[{util.current_time()}] " + str(result1) + "\n")
  
-    result2 = analysis.analysis_2(df)
     print(f"[{util.current_time()}] Show all months and the unique total count of crimes sorted in increasing order.")
+    result2 = analysis.analysis_2(df)
     print(f"[{util.current_time()}] " + str(result2) + "\n")
  
-    result3 = analysis.analysis_3(df)
     print(f"[{util.current_time()}] Show the top 10 streets with the most crimes in LA in 2019. Also display the total amount of crimes in each street.")
+    result3 = analysis.analysis_3(df)
     print(f"[{util.current_time()}] " + str(result3) + "\n")
   
-    result4 = analysis.analysis_4(df)
     print(f"[{util.current_time()}] Show the top 5 most dangerous times (in hours) to be in Hollywood. Also display the total amount of crimes in each hour.")
+    result4 = analysis.analysis_4(df)
     print(f"[{util.current_time()}] " + str(result4) + "\n")
    
-    result5 = analysis.analysis_5(df)
     print(f"[{util.current_time()}] Print the details of the crime that that took the most time (in hours) to be reported.")
+    result5 = analysis.analysis_5(df)
     print(f"[{util.current_time()}] " + str(result5) + "\n")
    
-    result6 = analysis.analysis_6(df)
     print(f"[{util.current_time()}] Show the 10 top most common crime types (Crm Cd Desc) overall across all years.")
+    result6 = analysis.analysis_6(df)
     print(f"[{util.current_time()}] " + str(result6) + "\n")
    
-    result7 = analysis.analysis_7(df)
     print(f"[{util.current_time()}] Are woman or men more likely to be the victim of a crime in LA between lunch time (11:00am and 1:00pm)?. Support of your answer.")
+    result7 = analysis.analysis_7(df)
     print(f"[{util.current_time()}] " + str(result7) + "\n")
     
-    result8 = analysis.analysis_8(df)
     print(f"[{util.current_time()}] What is the month the has the most major credit card frauds (Crm Cd Desc = 'CREDIT CARDS, FRAUD USE ($950 & UNDER')) in LA in 2019.")
+    result8 = analysis.analysis_8(df)
     print(f"[{util.current_time()}] " + str(result8) + "\n")
 
-    result9 = analysis.analysis_9(df)
     print(f"[{util.current_time()}] List the top 5 more dangerous areas for older man (age from 65 and more) in december of 2018.")
+    result9 = analysis.analysis_9(df)
     print(f"[{util.current_time()}] " + str(result9) + "\n")
   
     util.wait_on_user()

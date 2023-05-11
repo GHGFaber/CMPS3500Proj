@@ -15,8 +15,29 @@ import re
 
 def analysis_0(df):
     # (0)  Show the total unique count of crimes per year sorted in descending order.
+
+    if 'DATE OCC' not in df.columns:
+        print("0: Missing key column 'DATE OCC'")
+        return None
+    if 'Crm Cd Desc' not in df.columns:
+        print("0: Missing key column 'Crm Cd Desc'")
+        return None
+
+    # create dictionary of Areas with crime count values
+    area_crime_counts = {}
     
-    return None
+    try:
+        df_0 = df
+        df_0['DATE OCC'] = pd.to_datetime(df_0['DATE OCC'])
+        df_0['YEAR'] = df_0['DATE OCC'].dt.year
+        unique_counts = df_0.groupby('YEAR')['Crm Cd Desc'].nunique()
+        unique_counts_sorted = unique_counts.sort_values(ascending=False)
+        return unique_counts_sorted
+    except Exception as e:
+        print("0: Error occurred:", e)
+        return None
+   
+    
 
 
 def analysis_1(df):
