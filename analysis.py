@@ -86,8 +86,35 @@ def analysis_3(df):
 
 def analysis_4(df):
     # (4)  Show the top 5 most dangerous times (in hours) to be in Hollywood. Also display the total amount of crimes in each hour.
+    
+    if 'TIME OCC' not in df.columns:
+        print("4: Missing key column 'TIME OCC'")
+        return None
+    if 'AREA NAME' not in df.columns:
+        print("4: Missing key column 'AREA NAME'")
+        return None
+    
+    target_area = 'Hollywood'
 
-    return None
+    try:
+        df_4 = df
+        df_4 = df_4[df_4['AREA NAME'] == target_area]
+
+        top_hours = {}
+        for value in df['TIME OCC']:
+            if value in top_hours:
+                top_hours[value] += 1
+            else:
+                top_hours[value] = 1
+
+        sorted_hours = {k: v for k, v in sorted(top_hours.items(), key=lambda item: item[1], reverse=True)}
+        top_keys = list(sorted_hours.keys())[:5]
+        top_five_hours = {k: v for k, v in top_hours.items() if k in top_keys} 
+    except Exception as e:
+        print("4: Error occurred:", e)
+        return None
+
+    return top_five_hours
 
 
 def analysis_5(df):
@@ -108,7 +135,7 @@ def analysis_5(df):
         df_5['hours_difference'] = (df_5['DATE OCC'] - df_5['Date Rptd']).astype('timedelta64[s]') / 3600
         target_row = df['hours_difference'].idxmax()
     except Exception as e:
-        print("2: Error occurred:", e)
+        print("5: Error occurred:", e)
         return None
    
     return df.iloc[target_row]
@@ -142,7 +169,7 @@ def analysis_6(df):
         top_ten_crime_types = {k: v for k, v in crime_types.items() if k in top_keys} 
     
     except Exception as e:
-        print("2: Error occurred:", e)
+        print("6: Error occurred:", e)
         return None
     
     return top_ten_crime_types
