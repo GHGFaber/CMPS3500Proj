@@ -200,7 +200,7 @@ def describe_data():
 def data_analysis():
     util.clear_console()
     print("\nData Analysis:")
-    print("**************\n")
+    print("**************")
 
     print("")
     print(f"[{util.current_time()}] Show the total unique count of crimes per year sorted in descending order.")
@@ -250,10 +250,7 @@ def data_analysis():
 # fucntion to print data set
 def print_data():
     try:
-        col = 'Crm Cd Desc'
-        target_desc = '$950.01 & OVER'
-        df_n = df[df['Crm Cd Desc'].str.contains(target_desc, case=False, na=False)]
-        print(df_n)
+        print(df)
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except Exception as e:
