@@ -11,7 +11,7 @@ def count_all_values(df, column):
     count = 0
     for value in df[column]:
         if value == value:
-            count =+ 1
+            count += 1
     return count
 
 def count_unique_values(df, column):
@@ -24,6 +24,7 @@ def count_unique_values(df, column):
     return unique_values
 
 def search_by_value(df, column_name, value):
+    # Filter the DataFrame to only include rows where the value in the column is equal to the specified value
     try:
         # Check if column_name is in df
         if column_name not in df.columns:
@@ -40,23 +41,33 @@ def search_by_value(df, column_name, value):
         return None
 
 
-def count_unique_values_in_column(df):
+#Distinct Count by User Input
+def distinct_count(df):
     print(f"[{current_time()}] Select column number to count unique values:\n")
     for i, col_name in enumerate(df.columns):
         print(f"{i}: {col_name}")
+    
+    while True:
+        #Check if input is int
+        try:
+            column_choice = int(input("\nEnter an option: "))
+            #Check if input within range
+            if column_choice < 0 or column_choice >= len(df.columns):
+                print("Invalid column number. Please try again.")
+                continue
 
-    column_choice = int(input("Enter an option: "))
-    if column_choice < 0 or column_choice >= len(df.columns):
-        print("Invalid column number. Please try again.")
-        return
+            column_name = df.columns[column_choice]
+            unique_values = count_unique_values(df, column_name)
 
-    column_name = df.columns[column_choice]
-    unique_values = count_unique_values(df, column_name)
-
-    print(f"Unique values in column '{column_name}': {len(unique_values)}")
-    print("Value:  Counts:")
-    for value, count in unique_values.items():
-        print(f"{value}: {count}")
+            print(f"Unique values in column '{column_name}': {len(unique_values)}")
+            print("Value: counts:")
+            for value, count in unique_values.items():
+                print(f"{value}: {count}")
+            break
+        except ValueError:
+            print("Invalid input. please try again.")
+        except Exception as e:
+            print(f"Invalid input: ", e)
 
 
 
@@ -168,14 +179,18 @@ def explore_data():
                     element = df[column_name].dtype.type(element)
                 except ValueError:
                     print("Invalid input for the data type of the selected column. Please try again.")
-                    return explore_data()
+                    continue
+                start_time = time.time()
                 rows = search_by_value(df, column_name, element)
+                end_time = time.time()
                 if len(rows) > 0:
                     print(f"[{current_time()}] Element found in these rows. ")
                     print(rows)
+                    print(f"\nStats printed succesfully! Time to process is {round(end_time - start_time, 2)} sec.\n ")
+                    return explore_data()
                 else:
                     print(f"[{current_time()}] Element not found.")
-                return explore_data()
+                    return explore_data()
             except ValueError:
                 print("Invalid input for the column number. Please try again.")
             except IndexError:
@@ -183,11 +198,11 @@ def explore_data():
     elif choice == "26":
         print("(26) Count Unique Values in Column:")
         print("************************************")
-        count_unique_values_in_column(df)
+        distinct_count(df)
         print("\n")
         return explore_data()
     elif choice == "25":
-        return main_menu()
+        return
     else:
         print("Invalid choice. Please try again.")
         explore_data()
@@ -198,7 +213,11 @@ def data_analysis():
     return
 
 def print_data():
-    pass
+    print("\nPrint Data Set:")
+    print("***************")
+    print(df)
+    print("\n")
+    return
 
 # Main loop
 if __name__ == "__main__":
