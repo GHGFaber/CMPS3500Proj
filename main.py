@@ -141,7 +141,6 @@ def explore_data():
 
 # Function to describe data set
 def describe_data():
-    
     util.clear_console()
     print("Describing Data:")
     print("***************")
@@ -164,24 +163,31 @@ def describe_data():
         return
     
     start_time = time.time()
+    sorted_col = describe.sort_descending(df[col_name].tolist())
     counts = describe.get_counts(df, col_name)
     mean = describe.get_mean(df, col_name)
-    
-    sorted_col = describe.sort_descending(df[col_name].tolist())
-    
+    median = describe.get_median(sorted_col)
+    mode = describe.get_mode(df, col_name)
+    standard_deviation = describe.get_standard_deviation(df, col_name, mean)
+    variance = describe.get_variance(df,col_name, mean)
+    min = sorted_col[0]
+    max = sorted_col[len(sorted_col) - 1]
+    mean = describe.get_mean(df, col_name)
     end_time = time.time()
-
-
 
     print(f"\nColumn [{col_name}]:")
     print("===========================")
-    print(f"Count:\t{counts['full']}")
-    print(f"Unique:\t{counts['unique']}")
-    print(f"Mean:\t{mean}")
+    print(f"Count:\t\t\t\t{counts['full']}")
+    print(f"Unique:\t\t\t\t{counts['unique']}")
+    print(f"Mean:\t\t\t\t{mean}")
+    print(f"Median:\t\t\t\t{median}")
+    print(f"Mode:\t\t\t\t{mode}")
+    print(f"Standard Deviation (SD):\t{standard_deviation}")
+    print(f"Variance:\t\t\t{variance}")
+    print(f"Minimum:\t\t\t{min}")
+    print(f"Maximum:\t\t\t{max}")
 
     print(f"\nTime to process {round(end_time - start_time, 2)} sec.\n")
-
-    print(sorted_col)
 
 
 def data_analysis():
