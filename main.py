@@ -196,21 +196,22 @@ def describe_data():
     print(f"\nTime to process is {round(end_time - start_time, 2)} sec.\n")
 
 
+# Function for analysis of data set
 def data_analysis():
     util.clear_console()
     print("\nData Analysis:")
     print("**************")
-    
-    result0 = None
-    result1 = None
-    result2 = None
-    result3 = None
-    result4 = None
-    result5 = None
-    result6 = None
+
+    result0 = analysis.analysis_0(df)
+    result1 = analysis.analysis_1(df)
+    result2 = analysis.analysis_2(df)
+    result3 = analysis.analysis_3(df)
+    result4 = analysis.analysis_4(df)
+    result5 = analysis.analysis_5(df)
+    result6 = analysis.analysis_6(df)
     result7 = analysis.analysis_7(df)
-    result8 = None
-    result9 = None
+    result8 = analysis.analysis_8(df)
+    result9 = analysis.analysis_9(df)
 
     
     print(f"[{util.current_time()}] Show the total unique count of crimes per year sorted in descending order.")
@@ -237,6 +238,8 @@ def data_analysis():
     util.wait_on_user()
     return
 
+
+# fucntion to print data set
 def print_data():
     try:
         print(df)
@@ -245,6 +248,7 @@ def print_data():
     except Exception as e:
         print("Error occurred:", e)
     util.wait_on_user()
+
 
 # Main loop
 if __name__ == "__main__":
