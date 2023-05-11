@@ -5,145 +5,142 @@ import explore
 import describe
 import analysis
 
+from rich.console import Console
+
+console = Console()                 # Rich Funct. Displays to Console
+
 # Function to display main menu
 def main_menu():
     util.clear_console()
-    print("Main Menu:")
-    print("**********")
-    print("(1) Load Data")
-    print("(2) Exploring Data")
-    print("(3) Data Analysis")
-    print("(4) Print Data Set")
-    print("(5) Quit")
+    console.print ("----------------  Main Menu  ------------------- \n\n" +
+                    "[1] Load Data       \n" +
+                    "[2] Exploring Data  \n" +
+                    "[3] Data Analysis   \n" +
+                    "[4] Print Data Set  \n\n" +
+                    "[Q] Quit            \n")
 
 # Function to load data set
 def load_data():
-    util.clear_console()
     global df
-    print("Load data set:")
-    print("**************")
-    print(f"[{util.current_time()}] Select the number of the file to load from the list below:")
-    print("\tPlease select an option:")
-    print("\t[1] data.csv")
-    print("\t[2] Crime_Data_from_2017_to_2019.csv")
-    print("\t[3] nothing.csv")
-    file_choice = input()
-    if file_choice == "1":
-        file_name = "data.csv"
-    elif file_choice == "2":
-        file_name = "Crime_Data_from_2017_to_2019.csv"
-    elif file_choice == "3":
-        file_name = "nothing.csv"
-    else:
-        print("Invalid choice. Returning to the main menu.")
-        return
+    while True:
+        util.clear_console()
+        console.print ("--------------  Load Data Set  ----------------- \n\n" +
+                        "\t[1] data.csv                           \n" +
+                        "\t[2] Crime_Data_from_2017_to_2019.csv   \n" +
+                        "\t[3] nothing.csv                        \n\n" +
+                        "\t[R] Return to Main Menu                \n")
+        
+        file_choice = console.input(f"[{util.current_time()}] Select the number of the file to load from the list above: ").lower()
+        if file_choice == "1":
+            file_name = "data.csv"
+        elif file_choice == "2":
+            file_name = "Crime_Data_from_2017_to_2019.csv"
+        elif file_choice == "3":
+            file_name = "nothing.csv"
+        elif file_choice == "r":
+            return
+        else:
+            console.print("Invalid choice.")
+            continue
 
-    try:
-        start_time = time.time()
-        df = pd.read_csv(file_name)
-        end_time = time.time()
-        df = df.rename(columns=lambda x: x.strip()) #trim whitespace from headers
-        df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x) #trim whitespace from cells
-        df = df.drop('Crm Cd 2', axis=1)
-        df = df.drop('Crm Cd 3', axis=1)
-        df = df.drop('Crm Cd 4', axis=1)
-        df = df.drop('Cross Street', axis=1)
-        df = df.dropna() 
-    except FileNotFoundError:
-        print("File not found.")
+        try:
+            start_time = time.time()
+            df = pd.read_csv(file_name)
+            end_time = time.time()
+            df = df.rename(columns=lambda x: x.strip())                         #trim whitespace from headers
+            df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x)  #trim whitespace from cells
+            df = df.drop('Crm Cd 2', axis=1)
+            df = df.drop('Crm Cd 3', axis=1)
+            df = df.drop('Crm Cd 4', axis=1)
+            df = df.drop('Cross Street', axis=1)
+            df = df.dropna() 
+        except FileNotFoundError:
+            console.print("File not found.")
+            util.wait_on_user()
+            return
+
+        console.print(f"[{util.current_time()}] Total Columns Read: {df.shape[1]}")
+        console.print(f"[{util.current_time()}] Total Rows Read: {df.shape[0]}\n")
+        console.print("File loaded successfully!")
+        console.print(f"Time to load {end_time - start_time} sec.\n")
         util.wait_on_user()
         return
 
-    print("")
-    print(f"[{util.current_time()}]" + " " + file_choice)
-    print(f"[{util.current_time()}] Total Columns Read: {df.shape[1]}")
-    print(f"[{util.current_time()}] Total Rows Read: {df.shape[0]}\n")
-    print("File loaded successfully!")
-    print(f"Time to load {round(end_time - start_time, 2)} sec.\n")
-    util.wait_on_user()
-
 # Function to explore data set
 def explore_data():
-    util.clear_console()
-    print("Exploring Data:")
-    print("***************")
-    print("(21) List all Columns:")
-    print("(22) Drop Columns:")
-    print("(23) Describe Columns:")
-    print("(24) Search Element in Column:")
-    print("(25) Sort Column:")
-    print("(b)  Back to Main Menu:")
-    choice = input("Enter an option: ")
-    util.clear_console()
 
-    if choice == "21":
-        print("(21) List of all columns:")
-        print("*************************")
-        explore.list_all_columns(df)
-    
-    elif choice == "22":
-        print("(22) Drop Columns:")
-        print("******************")
-        explore.drop_column(df)
+    global df   # Apparently Necessary to allow other functs to access Dataframe
 
-    elif choice == "23":
-        print("(23) Describe Columns:")
-        print("**********************")
-        describe_data()
+    while True:
+        util.clear_console()
+        console.print ("-------------  Exploring Data:  ---------------- \n\n" +
+                        "\t[1] List all Columns                 \n" +
+                        "\t[2] Drop Columns                     \n" +
+                        "\t[3] Describe Columns                 \n" +
+                        "\t[4] Search Element in Columns        \n" +
+                        "\t[5] Sort Column                      \n\n"+
+                        "\t[R] Return to Main Menu              \n")
+        
+        choice = console.input("Enter an option: ").lower()
 
-    elif choice == "24":
-        print("(24) Search Element in Column:")
-        print("*******************************")
-        print("Select column number to perform a search:")
-        #TODO: Implement search
-        print("Select column number to perform a search:")
-        #TODO: Implement search
-        print(f"[{util.current_time()}] Enter element to search:\n")
-        for i, col_name in enumerate(df.columns):
-            print(f"{i}: {col_name}")
-        print("\n")
-        while True:
-            try:
-                column_choice = int(input("Enter an option: "))
-                if column_choice < 0 or column_choice >= len(df.columns):
-                    print("Invalid column number. Please try again.")
-                    continue
-                column_name = df.columns[column_choice]
-                element = input(f"[{util.current_time()}] Enter element to search: ")
+        if choice == "1":
+            console.print("---------  [1] List of all columns:  --------- \n")
+            explore.list_all_columns(df)
+        
+        elif choice == "2":
+            console.print("------------  [2] Drop Columns:  ------------- \n")
+            explore.drop_column(df)
+
+        elif choice == "3":
+            console.print("----------  [3] Describe Columns:  ----------- \n")
+            describe_data()
+
+        elif choice == "4":
+            console.print("------  [4] Search Element in Column:  ------- \n")
+            print("Select column number to perform a search:")
+            #TODO: Implement search
+            print("Select column number to perform a search:")
+            #TODO: Implement search
+            console.print(f"[{util.current_time()}] Enter element to search:\n")
+            for i, col_name in enumerate(df.columns):
+                console.print(f"{i}: {col_name}")
+            console.print("\n")
+            while True:
                 try:
-                    element = df[column_name].dtype.type(element)
+                    column_choice = int(console.input("Enter an option: "))
+                    if column_choice < 0 or column_choice >= len(df.columns):
+                        console.print("Invalid column number. Please try again.")
+                        continue
+                    column_name = df.columns[column_choice]
+                    element = console.input(f"[{util.current_time()}] Enter element to search: ")
+                    try:
+                        element = df[column_name].dtype.type(element)
+                    except ValueError:
+                        console.print("Invalid input for the data type of the selected column. Please try again.")
+                    rows = explore.search_by_value(df, column_name, element)
+                    if len(rows) > 0:
+                        console.print(f"[{util.current_time()}] Element found in these rows. ")
+                        console.print(rows)
+                    else:
+                        console.print(f"[{util.current_time()}] Element not found.")
+                    continue_search = console.input("Do you want to continue searching? (yes/no): ")
+                    if continue_search.lower() != "yes":
+                        return explore_data()
                 except ValueError:
-                    print("Invalid input for the data type of the selected column. Please try again.")
-                rows = explore.search_by_value(df, column_name, element)
-                if len(rows) > 0:
-                    print(f"[{util.current_time()}] Element found in these rows. ")
-                    print(rows)
-                else:
-                    print(f"[{util.current_time()}] Element not found.")
-                continue_search = input("Do you want to continue searching? (yes/no): ")
-                if continue_search.lower() != "yes":
-                    return explore_data()
-            except ValueError:
-                print("Invalid input for the column number. Please try again.")
-            except IndexError:
-                print("Invalid input for the column number. Please try again.")
+                    console.print("Invalid input for the column number. Please try again.")
+                except IndexError:
+                    console.print("Invalid input for the column number. Please try again.")
 
-    elif choice == "25":
-        print("(23) Sort Column:")
-        print("**********************")
-        df = explore.sort_column(df)
+        elif choice == "5":
+            console.print("------------  [5] Sort Column: --------------- \n")
+            df = explore.sort_column(df)
 
-    elif choice == "b":
-        return 
-    
-    else:
-        print("Invalid choice. Please try again.")
-        explore_data()
-
-    # Loop back to current menu
-    util.wait_on_user()
-    explore_data()
-
+        elif choice == "r":
+            return 
+        
+        else:
+            console.print("Invalid choice. Please try again.")
+            continue
 
 # Function to describe data set
 def describe_data():
@@ -258,7 +255,7 @@ if __name__ == "__main__":
     while True:
         # Display main menu
         main_menu()
-        choice = input("Enter an option: ")
+        choice = input("Enter an option: ").lower()
         # Call function based on user input
         if choice == "1":
             load_data()
@@ -268,7 +265,7 @@ if __name__ == "__main__":
             data_analysis()
         elif choice == "4":
             print_data()
-        elif choice == "5":
+        elif choice == "q":
             break
         else:
             print("Invalid choice. Please try again.")
