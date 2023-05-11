@@ -168,9 +168,7 @@ def describe_data():
         return
     
     start_time = time.time()
-
     sorted_col = describe.sort_descending(df[col_name].tolist())
-    print(type(sorted_col[0]))
     counts = describe.get_counts(df, col_name)
     mean = describe.get_mean(df, col_name)
     median = describe.get_median(sorted_col)
@@ -180,7 +178,6 @@ def describe_data():
     min = describe.get_minimum(df, col_name)
     max = describe.get_maximum(df, col_name)
     mean = describe.get_mean(df, col_name)
-
     end_time = time.time()
 
     print(f"\nColumn [{col_name}]:")
