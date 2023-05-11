@@ -111,14 +111,17 @@ def explore_data():
                     element = df[column_name].dtype.type(element)
                 except ValueError:
                     print("Invalid input for the data type of the selected column. Please try again.")
-                rows = explore.search_by_value(df, column_name, element)
+                    continue
+                start_time = time.time()
+                rows = search_by_value(df, column_name, element)
+                end_time = time.time()
                 if len(rows) > 0:
-                    print(f"[{util.current_time()}] Element found in these rows. ")
+                    print(f"[{current_time()}] Element found in these rows. ")
                     print(rows)
+                    print(f"\nStats printed succesfully! Time to process is {round(end_time - start_time, 2)} sec.\n ")
+                    return explore_data()
                 else:
-                    print(f"[{util.current_time()}] Element not found.")
-                continue_search = input("Do you want to continue searching? (y/n): ")
-                if continue_search.lower() != "y":
+                    print(f"[{current_time()}] Element not found.")
                     return explore_data()
             except ValueError:
                 print("Invalid input for the column number. Please try again.")
