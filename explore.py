@@ -22,7 +22,7 @@ def list_all_columns(df):
 
 
 def drop_column(df):
-    index_to_drop = console.input("Select a column number to drop or [L] to list columns:").upper()
+    index_to_drop = console.input("Select a column number to drop or [L] to list columns: ").upper()
 
     if index_to_drop == "L":
         try:
@@ -73,7 +73,7 @@ def sort_column(df):
     except Exception as e:
         console.print("Error occurred:", e)
 
-    col_index = console.input("\nEnter a column number or [L] to list columns:")
+    col_index = console.input("\nEnter a column number or [L] to list columns: ")
 
     try:
         col_name = df.columns[int(col_index)]

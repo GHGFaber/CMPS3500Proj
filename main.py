@@ -84,51 +84,75 @@ def explore_data():
         choice = console.input("Enter an option: ").lower()
 
         if choice == "1":
-            console.print("---------  [1] List of all columns:  --------- \n")
-            explore.list_all_columns(df)
-        
+            util.clear_console()
+            console.print("----------  [1] List of all columns:  ---------- \n")
+            try:    
+                explore.list_all_columns(df)
+            except Exception as e:
+                console.print("Error occurred:", e)
+                util.wait_on_user()
+                continue
+
         elif choice == "2":
-            console.print("------------  [2] Drop Columns:  ------------- \n")
-            explore.drop_column(df)
+            util.clear_console()
+            console.print("-------------  [2] Drop Columns:  -------------- \n")
+            try:
+                explore.drop_column(df)
+            except Exception as e:
+                console.print("Error occurred:", e)
+                util.wait_on_user()
+                continue
 
         elif choice == "3":
             console.print("----------  [3] Describe Columns:  ----------- \n")
             describe_data()
 
         elif choice == "4":
-            console.print("------  [4] Search Element in Column:  ------- \n")
-            print("Select column number to perform a search:")
-            console.print(f"[{util.current_time()}] Enter element to search:\n")
-            for i, col_name in enumerate(df.columns):
-                console.print(f"{i}: {col_name}")
-            console.print("\n")
-            while True:
-                try:
-                    column_choice = int(console.input("Enter an option: "))
-                    if column_choice < 0 or column_choice >= len(df.columns):
-                        console.print("Invalid column number. Please try again.")
-                        continue
-                    column_name = df.columns[column_choice]
-                    element = console.input(f"[{util.current_time()}] Enter element to search: ")
+            util.clear_console()
+            console.print("-------  [4] Search Element in Column:  -------- \n")
+            try:
+                console.print("Select column number to perform a search: ")
+                console.print(f"[{util.current_time()}] Enter element to search:\n")
+                for i, col_name in enumerate(df.columns):
+                    console.print(f"{i}: {col_name}")
+                console.print("\n")
+                while True:
                     try:
-                        element = df[column_name].dtype.type(element)
+                        column_choice = int(console.input("Enter an option: "))
+                        if column_choice < 0 or column_choice >= len(df.columns):
+                            console.print("Invalid column number. Please try again.")
+                            continue
+                        column_name = df.columns[column_choice]
+                        element = console.input(f"[{util.current_time()}] Enter element to search: ")
+                        try:
+                            element = df[column_name].dtype.type(element)
+                        except ValueError:
+                            console.print("Invalid input for the data type of the selected column. Please try again.")
+                        rows = explore.search_by_value(df, column_name, element)
+                        if len(rows) > 0:
+                            console.print(f"[{util.current_time()}] Element found in these rows. ")
+                            console.print(rows)
+                        else:
+                            console.print(f"[{util.current_time()}] Element not found.")
+                            return explore_data()
                     except ValueError:
-                        console.print("Invalid input for the data type of the selected column. Please try again.")
-                    rows = explore.search_by_value(df, column_name, element)
-                    if len(rows) > 0:
-                        console.print(f"[{util.current_time()}] Element found in these rows. ")
-                        console.print(rows)
-                    else:
-                        console.print(f"[{util.current_time()}] Element not found.")
-                        return explore_data()
-                except ValueError:
-                    console.print("Invalid input for the column number. Please try again.")
-                except IndexError:
-                    console.print("Invalid input for the column number. Please try again.")
+                        console.print("Invalid input for the column number. Please try again.")
+                    except IndexError:
+                        console.print("Invalid input for the column number. Please try again.")
+            except Exception as e:
+                console.print("Error occurred:", e)
+                util.wait_on_user()
+                continue
 
         elif choice == "5":
-            console.print("------------  [5] Sort Column: --------------- \n")
-            df = explore.sort_column(df)
+            util.clear_console()
+            console.print("-------------  [5] Sort Column: ---------------- \n")
+            try:
+                df = explore.sort_column(df)
+            except Exception as e:
+                console.print("Error occurred:", e)
+                util.wait_on_user()
+                continue
 
         elif choice == "r":
             return 
@@ -140,7 +164,7 @@ def explore_data():
 # Function to describe data set
 def describe_data():
     util.clear_console()
-    console.print("------------  Describing Data: --------------- \n")
+    console.print("-----------  [3] Describe Columns: ------------- \n")
     try: 
         for i, column in enumerate(df.columns):
             console.print(f"{i}: {column}")
@@ -191,7 +215,7 @@ def describe_data():
 
 
 # Function for analysis of data set
-def data_analysis():
+def data_analysis(df):
     util.clear_console()
     console.print("------------  Data Analysis: --------------- \n")
 
@@ -269,9 +293,19 @@ if __name__ == "__main__":
         elif choice == "2":
             explore_data()
         elif choice == "3":
-            data_analysis()
+            try:
+                data_analysis(df)
+            except Exception as e:
+                console.print("Error occured:", e)
+                util.wait_on_user()
+                continue
         elif choice == "4":
-            print_data(df)
+            try:
+                print_data(df)
+            except Exception as e:
+                console.print("Error occured:", e)
+                util.wait_on_user()
+                continue
         elif choice == "q":
             break
         else:
