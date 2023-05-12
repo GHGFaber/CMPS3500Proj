@@ -153,7 +153,8 @@ def explore_data():
             util.clear_console()
             console.print("-------------  [5] Sort Column: ---------------- \n")
             try:
-                df = explore.sort_column(df)
+                explore.sort_column(df)
+                util.wait_on_user()
             except Exception as e:
                 console.print("Error occurred:", e)
                 util.wait_on_user()

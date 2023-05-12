@@ -118,5 +118,4 @@ def sort_column(df):
     console.print(col)
     #console.print(df[col_name])
     util.wait_on_user()
-    return df
 
