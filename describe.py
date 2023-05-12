@@ -1,33 +1,66 @@
 import pandas as pd
+import explore
 import math
 
-def sort_ascending(arr):
+# def sort_ascending(arr):
+#     try:
+#         if len(arr) <= 1:
+#             return arr
+#         else:
+#             pivot = arr[0]
+#             less = []
+#             equal = []
+#             greater = []
+#             for value in arr:
+#                 if value < pivot:
+#                     less.append(value)
+#                 elif value == pivot:
+#                     equal.append(value)
+#                 else:
+#                     greater.append(value)
+#             return sort_ascending(less) + sorted(equal) + sort_ascending(greater)
+#     except Exception as e:
+#         print("Error occurred:", e)
+        
+# def sort_descending(arr):
+#     try:
+#         arr = sort_ascending(arr)
+#         return arr[::-1]
+#     except Exception as e:
+#         print("Error occurred:", e)
+
+def sort_ascending(df, col_name):
     try:
-        if len(arr) <= 1:
-            return arr
+        if len(df) <= 1:
+            return df[col_name]
         else:
-            pivot = arr[0]
+            pivot = df[col_name].iloc[0]
             less = []
             equal = []
             greater = []
-            for value in arr:
+            for value in df[col_name]:
                 if value < pivot:
                     less.append(value)
                 elif value == pivot:
                     equal.append(value)
                 else:
                     greater.append(value)
-            return sort_ascending(less) + sorted(equal) + sort_ascending(greater)
+            sorted_less = sort_ascending(df[df[col_name].isin(less)], col_name)
+            sorted_equal = df[df[col_name].isin(equal)][col_name]
+            sorted_greater = sort_ascending(df[df[col_name].isin(greater)], col_name)
+            return pd.concat([sorted_less, sorted_equal, sorted_greater])
     except Exception as e:
         print("Error occurred:", e)
-        
-def sort_descending(arr):
-    try:
-        arr = sort_ascending(arr)
-        return arr[::-1]
-    except Exception as e:
-        print("Error occurred:", e)
+        return df[col_name]
 
+
+def sort_descending(df, col_name):
+    try:
+        sorted_col = sort_ascending(df, col_name)
+        return sorted_col.iloc[::-1]
+    except Exception as e:
+        print("Error occurred:", e)
+        return df[col_name]
 
 def get_counts(df,col_name):
     counts = {"full":0, "unique":0}
@@ -183,8 +216,7 @@ def get_minimum(df, col_name):
 
 def get_maximum(df, col_name):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
-        print(f"Error: {col_name} is not of numeric data type.")
-        return None
+        explore.sort_column(df[col_name])
         
     try:
         max = None

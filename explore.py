@@ -1,4 +1,5 @@
 import pandas as pd
+import describe
 import time
 import util
 
@@ -86,7 +87,8 @@ def sort_column(df):
     if choice == "a":
         try:
             start_time = time.time()
-            df = df.sort_values(col_name, ascending=True)
+            #df = df.sort_values(col_name, ascending=True)
+            col = describe.sort_ascending(df, col_name)
             end_time = time.time()
             console.print(f"Time to sort {end_time - start_time} sec.\n")
         except (AttributeError, ValueError):
@@ -99,7 +101,8 @@ def sort_column(df):
     elif choice == "d":
         try:
             start_time = time.time()
-            df = df.sort_values(col_name, ascending=False)
+            #df = df.sort_values(col_name, ascending=False)
+            col = describe.sort_descending(df, col_name)
             end_time = time.time()
             console.print(f"Time to sort {end_time - start_time} sec.\n")
         except (AttributeError, ValueError):
@@ -112,6 +115,8 @@ def sort_column(df):
     else:
         console.print("Invalid choice. Please try again.")
 
-    console.print(df[col_name])
+    console.print(col)
+    #console.print(df[col_name])
     util.wait_on_user()
     return df
+
