@@ -151,9 +151,11 @@ def describe_data():
             console.print(f"{i}: {column}")
     except (AttributeError, ValueError):
         console.print("DataFrame is not defined or empty.")
+        util.wait_on_user()
         return
     except Exception as e:
         console.print("Error occurred:", e)
+        util.wait_on_user()
         return
 
     col_index = console.input("\nEnter a column number or [L] to list columns:\t")

@@ -22,7 +22,7 @@ def list_all_columns(df):
 
 
 def drop_column(df):
-    index_to_drop = console.input("Select a column number to drop or [L] to list columns:")
+    index_to_drop = console.input("Select a column number to drop or [L] to list columns:").upper()
 
     if index_to_drop == "L":
         try:
