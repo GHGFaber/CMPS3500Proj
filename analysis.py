@@ -297,9 +297,9 @@ def analysis_8(df):
     try:
         df_8 = df
         df_8['DATE OCC'] = pd.to_datetime(df_8['DATE OCC'])
-        df_8 = df_8[df_8['Crm Cd Desc'].str.extract(target_desc, flags=re.IGNORECASE).notnull().any(1)]
+        df = df[df['Crm Cd Desc'] == 'CREDIT CARDS, FRAUD USE ($950.01 & UNDER)']
         df_8 = df_8[df_8['LOCATION'].str.contains(location_name, case=False, na=False)]
-        df_8 = df_8.loc[df_8['DATE OCC'].dt.year == target_year]
+        df_9 = df_8[df_8['DATE OCC'].dt.year == 2019]
 
         fraudct_by_month = {}
         for value in df_8['DATE OCC']:
