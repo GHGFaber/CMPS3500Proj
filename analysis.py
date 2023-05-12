@@ -123,7 +123,7 @@ def analysis_3(df):
             if substr_end_pos != -1:
                 substring = value[:substr_end_pos].strip() # remove trailing whitespace
                 substring = ' '.join(substring.split()) # remove extra spaces in substr
-                if substring not in streets and substring != '':
+                if substring not in streets:
                     streets[substring] = 1
                 else:
                     streets[substring] += 1
@@ -277,46 +277,46 @@ def analysis_7(df):
 def analysis_8(df):
     # (8)  What is the month the has the most major credit card frauds (Crm Cd Desc = 'CREDIT CARDS, FRAUD USE ($950 & UNDER')) in LA in 2019.
     
-    # if 'DATE OCC' not in df.columns:
-    #     print("8: Missing key column 'DATE OCC'")
-    #     return None
-    # if 'LOCATION' not in df.columns:
-    #     print("8: Missing key column 'LOCATION'")
-    #     return None
-    # if 'Crm Cd' not in df.columns:
-    #     print("8: Missing key column 'Crm Cd'")
-    #     return None
-    # if 'Crm Cd Desc' not in df.columns:
-    #     print("8: Missing key column 'Crm Cd Desc'")
-    #     return None
+    if 'DATE OCC' not in df.columns:
+        print("8: Missing key column 'DATE OCC'")
+        return None
+    if 'LOCATION' not in df.columns:
+        print("8: Missing key column 'LOCATION'")
+        return None
+    if 'Crm Cd' not in df.columns:
+        print("8: Missing key column 'Crm Cd'")
+        return None
+    if 'Crm Cd Desc' not in df.columns:
+        print("8: Missing key column 'Crm Cd Desc'")
+        return None
     
-    # target_desc = 'CREDIT CARDS, FRAUD USE ($950.01 & OVER)'
-    # location_name = 'LOS ANGELES'
-    # target_year = 2013
+    target_desc = 'CREDIT CARDS, FRAUD USE ($950.01 & UNDER)'
+    location_name = 'LOS ANGELES'
+    target_year = 2019
 
-    # try:
-    #     df_8 = df
-    #     df_8['DATE OCC'] = pd.to_datetime(df_8['DATE OCC'])
-    #     df_8 = df_8[df_8['Crm Cd Desc'].str.extract(target_desc, flags=re.IGNORECASE).notnull().any(1)]
-    #     #df_8 = df_8[df_8['LOCATION'].str.contains(location_name, case=False, na=False)]
-    #     #df_8 = df_8.loc[df_8['DATE OCC'].dt.year == target_year]
+    try:
+        df_8 = df
+        df_8['DATE OCC'] = pd.to_datetime(df_8['DATE OCC'])
+        df_8 = df_8[df_8['Crm Cd Desc'].str.extract(target_desc, flags=re.IGNORECASE).notnull().any(1)]
+        df_8 = df_8[df_8['LOCATION'].str.contains(location_name, case=False, na=False)]
+        df_8 = df_8.loc[df_8['DATE OCC'].dt.year == target_year]
 
-    #     fraudct_by_month = {}
-    #     for value in df_8['DATE OCC']:
-    #         month_name = calendar.month_name[value.month]
-    #         if month_name in fraudct_by_month:
-    #             fraudct_by_month[month_name] += 1
-    #         else:
-    #             fraudct_by_month[month_name] = 1
+        fraudct_by_month = {}
+        for value in df_8['DATE OCC']:
+            month_name = calendar.month_name[value.month]
+            if month_name in fraudct_by_month:
+                fraudct_by_month[month_name] += 1
+            else:
+                fraudct_by_month[month_name] = 1
 
-    #     if not fraudct_by_month:
-    #         return "No major credit card frauds in {} in {}".format(location_name, target_year)
-    # except Exception as e:
-    #     print("8: Error occurred:", e)
-    #     return None
+        if not fraudct_by_month:
+            return "No major credit card frauds in {} in {}".format(location_name, target_year)
+    except Exception as e:
+        print("8: Error occurred:", e)
+        return None
  
-    # return max(fraudct_by_month.items(), key=lambda x: x[1])
-    return None
+    return max(fraudct_by_month.items(), key=lambda x: x[1])
+
 
 
 def analysis_9(df):
