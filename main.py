@@ -27,7 +27,7 @@ def load_data():
         console.print ("--------------  Load Data Set  ----------------- \n\n" +
                         "\t[1] data.csv                           \n" +
                         "\t[2] Crime_Data_from_2017_to_2019.csv   \n" +
-                        "\t[3] nothing.csv                        \n\n" +
+                        "\t[3] Crime_Data_presentation.csv       \n\n" +
                         "\t[R] Return to Main Menu                \n")
         
         file_choice = console.input(f"[{util.current_time()}] Select the number of the file to load from the list above: ").lower()
@@ -36,7 +36,7 @@ def load_data():
         elif file_choice == "2":
             file_name = "Crime_Data_from_2017_to_2019.csv"
         elif file_choice == "3":
-            file_name = "nothing.csv"
+            file_name = "Crime_Data_presentation.csv"
         elif file_choice == "r":
             return
         else:
