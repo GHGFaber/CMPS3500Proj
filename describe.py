@@ -161,14 +161,16 @@ def get_variance(df, col_name, mean):
 
 def get_minimum(df, col_name):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
-        print("Error: Minimum is not of numeric data type.")
+        print(f"Error: {col_name} is not of numeric data type.")
         return None
-    
+     
     try:
         min = None
         for value in df[col_name]:
-            if value < min or min is None:
+            if min is None or value < min:
                 min = value
+
+        return min
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except IndexError:
@@ -176,19 +178,21 @@ def get_minimum(df, col_name):
     except Exception as e:
         print("Error occurred:", e)
 
-    return min
+  
 
 
 def get_maximum(df, col_name):
     if not pd.api.types.is_numeric_dtype(df[col_name]):
-        print("Error: Maximum is not of numeric data type.")
+        print(f"Error: {col_name} is not of numeric data type.")
         return None
-    
+        
     try:
         max = None
         for value in df[col_name]:
-            if value > max or max is None:
+            if max is None or value > max:
                 max = value
+
+        return max
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except IndexError:
@@ -196,7 +200,7 @@ def get_maximum(df, col_name):
     except Exception as e:
         print("Error occurred:", e)
 
-    return max
+    
 
 
 
