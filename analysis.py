@@ -19,8 +19,8 @@ def analysis_0(df):
     if 'DATE OCC' not in df.columns:
         print("0: Missing key column 'DATE OCC'")
         return None
-    if 'Crm Cd Desc' not in df.columns:
-        print("0: Missing key column 'Crm Cd Desc'")
+    if 'DR_NO' not in df.columns:
+        print("0: Missing key column 'DR_NO'")
         return None
 
     # create dictionary of Areas with crime count values
@@ -30,7 +30,7 @@ def analysis_0(df):
         df_0 = df
         df_0['DATE OCC'] = pd.to_datetime(df_0['DATE OCC'])
         df_0['YEAR'] = df_0['DATE OCC'].dt.year
-        unique_counts = df_0.groupby('YEAR')['Crm Cd Desc'].nunique()
+        unique_counts = df_0.groupby('YEAR')['DR_NO'].nunique()
         unique_counts_sorted = unique_counts.sort_values(ascending=False)
         return unique_counts_sorted
     except Exception as e:
