@@ -139,6 +139,7 @@ def explore_data():
                         else:
                             console.print(f"[{util.current_time()}] Element not found. Please select a column.")
                             continue
+                        util.wait_on_user()
                         break
                     except ValueError:
                         console.print("Invalid input for the column number. Please try again.")
