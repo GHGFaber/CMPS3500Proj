@@ -98,9 +98,6 @@ def explore_data():
         elif choice == "4":
             console.print("------  [4] Search Element in Column:  ------- \n")
             print("Select column number to perform a search:")
-            #TODO: Implement search
-            print("Select column number to perform a search:")
-            #TODO: Implement search
             console.print(f"[{util.current_time()}] Enter element to search:\n")
             for i, col_name in enumerate(df.columns):
                 console.print(f"{i}: {col_name}")
@@ -123,8 +120,6 @@ def explore_data():
                         console.print(rows)
                     else:
                         console.print(f"[{util.current_time()}] Element not found.")
-                    continue_search = console.input("Do you want to continue searching? (yes/no): ")
-                    if continue_search.lower() != "yes":
                         return explore_data()
                 except ValueError:
                     console.print("Invalid input for the column number. Please try again.")
