@@ -190,15 +190,14 @@ def describe_data(df):
         return
     
     start_time = time.time()
-    sorted_col = describe.sort_descending(df,col_name).tolist()
+    sorted_col = describe.sort_descending(df[col_name].tolist())
     counts = describe.get_counts(df, col_name)
     mean = describe.get_mean(df, col_name)
     median = describe.get_median(sorted_col)
     mode = describe.get_mode(df, col_name)
     standard_deviation = describe.get_standard_deviation(df, col_name, mean)
     variance = describe.get_variance(df,col_name, mean)
-    min = describe.get_minimum(df, col_name)
-    max = describe.get_maximum(df, col_name)
+    minmax = describe.get_minimum_maximum(df,col_name)
     mean = describe.get_mean(df, col_name)
     end_time = time.time()
 
@@ -211,8 +210,8 @@ def describe_data(df):
     console.print(f"Mode:\t\t\t\t{mode}")
     console.print(f"Standard Deviation (SD):\t{standard_deviation}")
     console.print(f"Variance:\t\t\t{variance}")
-    console.print(f"Minimum:\t\t\t{min}")
-    console.print(f"Maximum:\t\t\t{max}")
+    console.print(f"Minimum:\t\t\t{minmax if minmax==None else minmax['minimum']}")
+    console.print(f"Maximum:\t\t\t{minmax if minmax==None else minmax['maximum']}")
 
     console.print(f"\nTime to process is {end_time - start_time} sec.\n")
     util.wait_on_user()

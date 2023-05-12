@@ -2,34 +2,34 @@ import pandas as pd
 import explore
 import math
 
-# def sort_ascending(arr):
-#     try:
-#         if len(arr) <= 1:
-#             return arr
-#         else:
-#             pivot = arr[0]
-#             less = []
-#             equal = []
-#             greater = []
-#             for value in arr:
-#                 if value < pivot:
-#                     less.append(value)
-#                 elif value == pivot:
-#                     equal.append(value)
-#                 else:
-#                     greater.append(value)
-#             return sort_ascending(less) + sorted(equal) + sort_ascending(greater)
-#     except Exception as e:
-#         print("Error occurred:", e)
+def sort_ascending(arr):
+    try:
+        if len(arr) <= 1:
+            return arr
+        else:
+            pivot = arr[0]
+            less = []
+            equal = []
+            greater = []
+            for value in arr:
+                if value < pivot:
+                    less.append(value)
+                elif value == pivot:
+                    equal.append(value)
+                else:
+                    greater.append(value)
+            return sort_ascending(less) + sorted(equal) + sort_ascending(greater)
+    except Exception as e:
+        print("Error occurred:", e)
         
-# def sort_descending(arr):
-#     try:
-#         arr = sort_ascending(arr)
-#         return arr[::-1]
-#     except Exception as e:
-#         print("Error occurred:", e)
+def sort_descending(arr):
+    try:
+        arr = sort_ascending(arr)
+        return arr[::-1]
+    except Exception as e:
+        print("Error occurred:", e)
 
-def sort_ascending(df, col_name):
+def sort_ascending_by_dfcol(df, col_name):
     try:
         if len(df) <= 1:
             return df[col_name]
@@ -45,18 +45,18 @@ def sort_ascending(df, col_name):
                     equal.append(value)
                 else:
                     greater.append(value)
-            sorted_less = sort_ascending(df[df[col_name].isin(less)], col_name)
+            sorted_less = sort_ascending_by_dfcol(df[df[col_name].isin(less)], col_name)
             sorted_equal = df[df[col_name].isin(equal)][col_name]
-            sorted_greater = sort_ascending(df[df[col_name].isin(greater)], col_name)
+            sorted_greater = sort_ascending_by_dfcol(df[df[col_name].isin(greater)], col_name)
             return pd.concat([sorted_less, sorted_equal, sorted_greater])
     except Exception as e:
         print("Error occurred:", e)
         return df[col_name]
 
 
-def sort_descending(df, col_name):
+def sort_descending_by_dfcol(df, col_name):
     try:
-        sorted_col = sort_ascending(df, col_name)
+        sorted_col = sort_ascending_by_dfcol(df, col_name)
         return sorted_col.iloc[::-1]
     except Exception as e:
         print("Error occurred:", e)
@@ -191,46 +191,31 @@ def get_variance(df, col_name, mean):
 
     return variance
 
-
-def get_minimum(df, col_name):
-    if not pd.api.types.is_numeric_dtype(df[col_name]):
-        print(f"Error: {col_name} is not of numeric data type.")
+def get_minimum_maximum(df, col_name):
+    if col_name == 'DATE OCC' or col_name == 'Date Rptd':
+        df[col_name] = pd.to_datetime(df[col_name])
+    
+    elif not pd.api.types.is_numeric_dtype(df[col_name]):
+        print(f"Error: MinMax is not of numeric data type.")
         return None
-     
+    
+    result = {'minimum': None, 'maximum': None}
     try:
-        min = None
         for value in df[col_name]:
-            if min is None or value < min:
-                min = value
-
-        return min
-    except (AttributeError, ValueError):
-        print("DataFrame is not defined or empty.")
-    except IndexError:
-        print("Invalid Column Index.")
-    except Exception as e:
-        print("Error occurred:", e)
-
-  
-
-
-def get_maximum(df, col_name):
-    if not pd.api.types.is_numeric_dtype(df[col_name]):
-        explore.sort_column(df[col_name])
+            if result['minimum'] is None or value < result['minimum']:
+                result['minimum'] = value
+            
+            if result['maximum'] is None or value > result['maximum']:
+                result['maximum'] = value
         
-    try:
-        max = None
-        for value in df[col_name]:
-            if max is None or value > max:
-                max = value
-
-        return max
+        return result
     except (AttributeError, ValueError):
         print("DataFrame is not defined or empty.")
     except IndexError:
         print("Invalid Column Index.")
     except Exception as e:
         print("Error occurred:", e)
+
 
     
 

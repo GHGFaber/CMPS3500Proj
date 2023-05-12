@@ -88,7 +88,7 @@ def sort_column(df):
         try:
             start_time = time.time()
             #df = df.sort_values(col_name, ascending=True)
-            col = describe.sort_ascending(df, col_name)
+            col = describe.sort_ascending_by_dfcol(df, col_name)
             end_time = time.time()
             console.print(f"Time to sort {end_time - start_time} sec.\n")
         except (AttributeError, ValueError):
@@ -102,7 +102,7 @@ def sort_column(df):
         try:
             start_time = time.time()
             #df = df.sort_values(col_name, ascending=False)
-            col = describe.sort_descending(df, col_name)
+            col = describe.sort_descending_by_dfcol(df, col_name)
             end_time = time.time()
             console.print(f"Time to sort {end_time - start_time} sec.\n")
         except (AttributeError, ValueError):
