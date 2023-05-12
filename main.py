@@ -72,7 +72,7 @@ def explore_data():
     global df   # Apparently Necessary to allow other functs to access Dataframe
 
     while True:
-        util.clear_console()
+        util.wait_on_user()
         console.print ("-------------  Exploring Data:  ---------------- \n\n" +
                         "\t[1] List all Columns                 \n" +
                         "\t[2] Drop Columns                     \n" +
@@ -128,20 +128,24 @@ def explore_data():
                             element = df[column_name].dtype.type(element)
                         except ValueError:
                             console.print("Invalid input for the data type of the selected column. Please try again.")
+                        start_time = time.time()
                         rows = explore.search_by_value(df, column_name, element)
+                        end_time = time.time()
                         if len(rows) > 0:
                             console.print(f"[{util.current_time()}] Element found in these rows. ")
                             console.print(rows)
+                            console.print("\n")
+                            console.print(f"[{util.current_time()}] Time to load {end_time - start_time} sec.\n")
                         else:
-                            console.print(f"[{util.current_time()}] Element not found.")
-                            return explore_data()
+                            console.print(f"[{util.current_time()}] Element not found. Please select a column.")
+                            continue
+                        break
                     except ValueError:
                         console.print("Invalid input for the column number. Please try again.")
                     except IndexError:
                         console.print("Invalid input for the column number. Please try again.")
             except Exception as e:
                 console.print("Error occurred:", e)
-                util.wait_on_user()
                 continue
 
         elif choice == "5":
