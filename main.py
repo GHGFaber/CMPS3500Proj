@@ -72,7 +72,7 @@ def explore_data():
     global df   # Apparently Necessary to allow other functs to access Dataframe
 
     while True:
-        util.wait_on_user()
+        util.clear_console()
         console.print ("-------------  Exploring Data:  ---------------- \n\n" +
                         "\t[1] List all Columns                 \n" +
                         "\t[2] Drop Columns                     \n" +
@@ -105,7 +105,7 @@ def explore_data():
 
         elif choice == "3":
             console.print("----------  [3] Describe Columns:  ----------- \n")
-            describe_data()
+            describe_data(df)
 
         elif choice == "4":
             util.clear_console()
@@ -166,7 +166,7 @@ def explore_data():
             continue
 
 # Function to describe data set
-def describe_data():
+def describe_data(df):
     util.clear_console()
     console.print("-----------  [3] Describe Columns: ------------- \n")
     try: 
@@ -190,7 +190,7 @@ def describe_data():
         return
     
     start_time = time.time()
-    sorted_col = describe.sort_descending(df[col_name].tolist())
+    sorted_col = describe.sort_descending(df,col_name).tolist()
     counts = describe.get_counts(df, col_name)
     mean = describe.get_mean(df, col_name)
     median = describe.get_median(sorted_col)
