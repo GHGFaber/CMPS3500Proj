@@ -181,13 +181,32 @@ def describe_data(df):
         util.wait_on_user()
         return
 
-    col_index = console.input("\nEnter a column number or [L] to list columns:\t")
-
-    try:
-        col_name = df.columns[int(col_index)]
-    except Exception as e:
-        console.print("Error occurred:", e)
-        return
+    # Loop that asks continously asks for user input until valid
+    while True:
+        col_input = console.input("\nEnter a column number or [L] to list columns:\t")
+        # If input == 'l', list all columns and continue loop
+        if col_input.lower() == "l":
+            for i, column in enumerate(df.columns):
+                console.print(f"{i}: {column}")
+            continue
+        try:
+            col_index = int(col_input)
+            # If input not == column #, print error message
+            if col_index < 0 or col_index >= len(df.columns):
+                console.print("Invalid column number.")
+                continue
+            # Else get column #, break loop
+            col_name = df.columns[col_index]
+            break
+        except ValueError:
+            console.print("Invalid input. Please try again.")
+            continue
+        except IndexError:
+            console.print("Column number is out of range. Please try again.")
+            continue
+        except Exception as e:
+            console.print("Error occurred:", e)
+            continue
     
     start_time = time.time()
     sorted_col = describe.sort_descending(df[col_name].tolist())
