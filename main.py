@@ -294,11 +294,14 @@ def print_data(df):
 
     try:
         n = console.input("Enter number of rows:\t")
+        if int(n) < 0:
+            console.print("Invalid number of rows")
+            util.wait_on_user()
+            return
+        
         pd.set_option('display.max_rows', None)
         #pd.set_option('display.max_columns', None)
         console.print(df.head(int(n)))
-    except (AttributeError, ValueError):
-        console.print("DataFrame is not defined or empty.")
     except Exception as e:
         console.print("Error occurred:", e)
 
